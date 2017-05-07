@@ -38,4 +38,6 @@ jspm_packages
 
 # intellij, webstorm ... related files
 .idea/
+.idea/jsLibraryMappings.xml
+.idea/vcs.xml
 keys.json
