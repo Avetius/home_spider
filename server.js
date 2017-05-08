@@ -1,7 +1,7 @@
 let broker = require('api/broker'),
     app = require('config/express'),
-
-
+    chalk = require("chalk"),
+    db = require("./config/db.js");
 
 broker.on('clientConnected', function(client) {
     console.log('client connected is ', client.id);
@@ -19,4 +19,12 @@ broker.on('ready', setup);
 function setup() {
     console.log('Mosca server is up and running');
 }
+
+let preferedPort = 8080,
+    port = process.env.PORT || preferedPort;
+// listen (start app with node server.js) ==================================
+app.listen(port);
+console.log(chalk.red('home_spider\t\t\t started'));
+console.log(chalk.blue('Port:\t\t\t '+port));
+console.log(chalk.yellow('Database:\t\t\t '+db.dbName));
 
