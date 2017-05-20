@@ -1,5 +1,5 @@
 let Sequelize = require('sequelize'),
-    db = require('./db.js'),
+    db = require('./../config/db.js'),
     sequelize = new Sequelize(db.dbName,db.username,db.password,{
         host: db.hostname,
         dialect: db.dbType,

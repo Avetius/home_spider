@@ -1,7 +1,7 @@
-let broker = require('api/broker'),
-    app = require('config/express'),
+let broker = require('./api/broker/mosca.js'),
+    app = require('./api/setup/express.js'),
     chalk = require("chalk"),
-    db = require("./config/db.js");
+    db = require("./api/config/db.js");
 
 broker.on('clientConnected', function(client) {
     console.log('client connected is ', client.id);
@@ -20,7 +20,7 @@ function setup() {
     console.log('Mosca server is up and running');
 }
 
-let preferedPort = 8080,
+let preferedPort = 8088,
     port = process.env.PORT || preferedPort;
 // listen (start app with node server.js) ==================================
 app.listen(port);
