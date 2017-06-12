@@ -1,5 +1,5 @@
 let router = require('express').Router(),
-    gate = require('../controllers/gatesCtrl.js');
+    gate = require('../../controllers/gates/gatesCtrl.js');
 
 router
     .post('/open/:number', gate.action)

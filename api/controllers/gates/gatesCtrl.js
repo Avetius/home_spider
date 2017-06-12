@@ -1,4 +1,4 @@
-let broker = require('../broker/mosca');
+let broker = require('../../broker/mosca');
 
 exports.action = (req, res) => {
     let message = {

@@ -3,8 +3,8 @@
  */
 
 const User = require("../../models/users/user.model.js");
-const errorHandler = require("../../helper/errorHandler.js");
-const response = require("../../helper/response.js");
+const errorHandler = require("../../helpers/errorHandler.js");
+const response = require("../../helpers/response.js");
 const upload      = require('../../setup/fileUploader.js');
 
 /**

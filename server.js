@@ -1,7 +1,20 @@
-let broker = require('./api/broker/mosca.js'),
-    app = require('./api/setup/express.js'),
-    chalk = require("chalk"),
-    db = require("./api/config/db.js");
+const fs                = require('fs');
+const http              = require('http');
+const https             = require('https');
+const chalk             = require("chalk");
+
+const privateKey        = fs.readFileSync('sslcert/server.key', 'utf8');
+const certificate       = fs.readFileSync('sslcert/server.crt', 'utf8');
+const app               = require('./api/setup/express.js');
+const credentials       = {key: privateKey, cert: certificate};
+
+const httpServer        = http.createServer(app);
+const httpsServer       = https.createServer(credentials, app);
+
+const broker            = require('./api/broker/mosca.js');
+const db                = require("./api/config/db.js");
+
+
 
 broker.on('clientConnected', function(client) {
     console.log('client connected is ', client.id);
@@ -13,17 +26,17 @@ broker.on('published', function(packet) {
     console.log('Client is ', packet.payload);
 });
 
-broker.on('ready', setup);
-
 // fired when the mqtt server is ready
-function setup() {
+broker.on('ready', () => {
     console.log('Mosca server is up and running');
-}
+});
 
-let preferedPort = 8088,
-    port = process.env.PORT || preferedPort;
+let httpPort  = process.env.PORT || 80;
+    httpsPort  = process.env.PORT || 443;
 // listen (start app with node server.js) ==================================
-app.listen(port);
+httpServer.listen(httpPort);
+httpsServer.listen(httpsPort);
+
 console.log(chalk.red('home_spider\t\t\t started'));
 console.log(chalk.blue('Port:\t\t\t '+port));
 console.log(chalk.yellow('Database:\t\t\t '+db.dbName));

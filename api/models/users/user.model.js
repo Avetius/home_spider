@@ -4,8 +4,8 @@
 'use strict';
 
 const sequelize   = require('../../setup/sequelize.js');
-const hash        = require('../../helper/hashPassword').hash;
-const compare     = require('../../helper/hashPassword').compare;
+const hash        = require('../../helpers/hashPassword').hash;
+const compare     = require('../../helpers/hashPassword').compare;
 const jwt         = require('jwt-simple');
 const secret      = require('../../setup/secret');
 const UserSchema  = require('./schemas/user.schema.js');
