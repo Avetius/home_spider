@@ -1,0 +1,22 @@
+
+{
+  "title": "user-create",
+  "description": "describes properties required to create a user",
+  "type": "object",
+  "properties": {
+    "username": {
+      "type": "string",
+      "description": "username of account"
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "account email"
+    },
+    "password": {
+      "type": "string",
+      "description": "account pass"
+    }
+  },
+  "required": ["username", "email", "password"]
+}

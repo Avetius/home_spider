@@ -1,42 +1,23 @@
-let passport = require('passport'),
-    LocalStrategy = require('passport-local'),
-    JwtStrategy = require('passport-jwt').Strategy,
-    ExtractJwt = require('passport-jwt').ExtractJwt,
-    User = require('../models/user.model'),
-    secret = require('./../config/secret.js'),
-    opts = {};
+'use strict';
 
-opts.jwtFromRequest = ExtractJwt.fromAuthHeader();
+const User = require('../models/users/user.model.js');
+const passport = require('passport');
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
+const secret = require('../setup/secret.js');
+let opts = {};
+
+opts.jwtFromRequest = ExtractJwt.fromHeader('access');
 opts.secretOrKey = secret;
-opts.issuer = '';  //accounts.examplesoft.com
-opts.audience = "localhost:8088"; //yoursite.net
+/*opts.issuer = "";  //accounts.examplesoft.com
+ opts.audience = "localhost:8088"; //yoursite.net*/
 opts.ignoreExpiration = true;
 
-passport.use('local', new LocalStrategy(
-    function(username, password, done) {
-        User.find({ where: { username: username }}).then((user) => {
-            if (!user) {
-                console.log("Invalid username");
-                done(null, false, { message: 'Invalid username' });
-            } else if (password != user.password) {
-                console.log("Invalid password");
-                done(null, false, { message: 'Invalid password'});
-            } else {
-                console.log("auth ok");
-                done(null, user);
-            }
-        }).error((err)=> {
-            console.log(err);
-            done(err);
-        });
-    }
-));
-
 passport.use(new JwtStrategy(opts, (payload, done) => {
-    User.findById(payload.sub).then((user, err) => {
-        if (err) {
-            return done(err, false);
-        }
+    console.log('passport.use payload -> ',payload);
+    User.auth(payload).then((user, err) => {
+        /*console.log('passport.use user-> ',user);*/
+        if (err) { return done(err, false); }
         if (user) {
             done(null, user);
         } else {
@@ -46,45 +27,34 @@ passport.use(new JwtStrategy(opts, (payload, done) => {
     });
 }));
 
-passport.serializeUser(function(user, done) {
-    console.log("serializeUser"+user.id);
-    done(null, user.id);
-});
-
-passport.deserializeUser(function(id, done) {
-    User.find({where: {id: id}}).then(function(user){
-        console.log("deserializeUser -> "+user);
-        done(null, user);
-    }).error(function(err){
-        console.log(err);
-        done(err, null);
-    });
-});
-
-passport.isAuth = function (req,res,next){
-    console.log("Checking Authentication..");
-    console.log("req.user -> "+req.user);
-    if(req.user){ //req.isAuthenticated()
+passport.isUser = function (req,res,next){
+    /*passport.authenticate('jwt', { session: false});*/
+    console.log("Checking Authentication...");
+    /*console.log("req.user -> ", req.user);*/
+    if(req.user){
         next();
+    }else{
+        res.send('Unauthorized');
     }
-    res.send('Unauthorized'); res.sendStatus(401);
 };
 
 passport.isAdmin = function (req,res,next){
-    console.log("Checking privileges");
-    console.log("req.user -> "+req.user);
-    if(req.user.privileges == 'admin'){ //req.isAuthenticated()
+    /*passport.authenticate('jwt', { session: false});*/
+    console.log("Checking privileges...");
+    /*console.log("req.user -> "+req.user);*/
+    if(req.user.privileges == 'admin'){
+        console.log('req.user.privileges -> ', req.user.privileges);
         next();
+    }else{
+        console.log('Permission Denied');
+        res.send('Permission Denied')
     }
-    res.send('Permission Denied'); res.sendStatus(401);
 };
 
-
-
-/**
- *passport.authenticate('local');
- */
-
-module.exports = passport;
+module.exports = {
+    passport: passport,
+    isUser: passport.isUser,
+    isAdmin: passport.isAdmin,
+};
 
 //todo add passport strategies for facebook google and tweeter

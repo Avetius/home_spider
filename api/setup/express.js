@@ -5,7 +5,7 @@ let express  = require('express'),
     morgan = require('morgan'),                     // log requests to the console (express4)
     bodyParser = require('body-parser'),            // pull information from HTML POST (express4)
     methodOverride = require('method-override'),    // simulate DELETE and PUT (express4)
-    gateRouter = require('../api/routes/gatesRoute.js'),
+    gateRouter = require('../routes/gatesRoute.js'),
     //session = require('express-session'),
     //passport = require('passport'),
     //LocalStrategy = require('passport-local'),
@@ -21,7 +21,7 @@ app.use(bodyParser.json());                                     // parse applica
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
 app.use(methodOverride());
 //app.use(compression());
-app.use(passport.initialize());
+//app.use(passport.initialize());
     // Add headers
     app.use(function (req, res, next) {
         /*Website you wish to allow to connect*/
