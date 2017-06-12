@@ -2,10 +2,10 @@
  * Created by sirius on 5/12/17.
  */
 
-const User = require("../../models/users/user.model.js");
-const errorHandler = require("../../helpers/errorHandler.js");
-const response = require("../../helpers/response.js");
-const upload      = require('../../setup/fileUploader.js');
+const User          = require("../../models/users/user.model.js");
+const errorHandler  = require("../../helpers/errorHandler.js");
+const response      = require("../../helpers/response.js");
+const upload        = require('../../setup/fileUploader.js');
 
 /**
  * Login

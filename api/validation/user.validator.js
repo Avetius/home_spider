@@ -1,6 +1,6 @@
 const Ajv       = require('ajv');
 const ajv       = new Ajv({ allErrors:true, removeAdditional:'all' });
-const files     = require('../helper/loader.js').getFiles(__dirname, 'users/rules');
+const files     = require('../helpers/loader.js').getFiles(__dirname, 'users/rules');
 
 files.map(obj => {
     ajv.addSchema(require(obj.path), obj.name)

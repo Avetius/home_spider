@@ -1,8 +1,8 @@
 module.exports = {
-    dbType: 'mysql',
-    username: 'root',
-    password: 'beeweb',
-    hostname: 'localhost',
-    port    : '3306',
-    dbName  : 'beeweb'
+    dbType      : 'postgres',
+    username    : 'graphite',
+    password    : 'pic16f84a',
+    hostname    : 'localhost',
+    port        : '5432',
+    dbName      : 'home_spider'
 };

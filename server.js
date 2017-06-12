@@ -3,8 +3,8 @@ const http              = require('http');
 const https             = require('https');
 const chalk             = require("chalk");
 
-const privateKey        = fs.readFileSync('sslcert/server.key', 'utf8');
-const certificate       = fs.readFileSync('sslcert/server.crt', 'utf8');
+const privateKey        = fs.readFileSync('./sslcert/certificate.key', 'utf8');
+const certificate       = fs.readFileSync('./sslcert/certificate.crt', 'utf8');
 const app               = require('./api/setup/express.js');
 const credentials       = {key: privateKey, cert: certificate};
 
@@ -13,8 +13,6 @@ const httpsServer       = https.createServer(credentials, app);
 
 const broker            = require('./api/broker/mosca.js');
 const db                = require("./api/config/db.js");
-
-
 
 broker.on('clientConnected', function(client) {
     console.log('client connected is ', client.id);
@@ -31,13 +29,12 @@ broker.on('ready', () => {
     console.log('Mosca server is up and running');
 });
 
-let httpPort  = process.env.PORT || 80;
-    httpsPort  = process.env.PORT || 443;
+//httpPort    = process.env.PORT || 80,
+let httpsPort   = process.env.PORT || 8088;
 // listen (start app with node server.js) ==================================
-httpServer.listen(httpPort);
+//httpServer.listen(httpPort);
 httpsServer.listen(httpsPort);
 
 console.log(chalk.red('home_spider\t\t\t started'));
-console.log(chalk.blue('Port:\t\t\t '+port));
-console.log(chalk.yellow('Database:\t\t\t '+db.dbName));
-
+console.log(chalk.blue('Port:\t\t\t\t ' + httpsPort));
+console.log(chalk.yellow('Database:\t\t\t ' + db.dbName));

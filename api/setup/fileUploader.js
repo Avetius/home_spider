@@ -3,7 +3,7 @@
  */
 
 let path    = require('path'),
-    errHand = require('../helper/errorHandler.js'),
+    errHand = require('../helpers/errorHandler.js'),
     multer  = require('multer'),
     storage = multer.diskStorage({
         destination: (req, file, cb) => {
