@@ -7,16 +7,17 @@ const bodyParser        = require('body-parser');                       // add r
 const methodOverride    = require('method-override');                   // simulate DELETE and PUT
 const compression       = require('compression');                       // compress req & res to gzip (increases speed and security)
 const helmet            = require('helmet');
-
+const path              = require('path');
 const userRoutes        = require('../routes/users/usersRoutes.js');
 const gateRoutes        = require('../routes/gates/gatesRoutes.js');
 const passport          = require('./auth.js').passport;
 const validate          = require('../validation/user.validator.js');   //for ajv validator -> require('../validation/user.validator.js'); require('../validation/expressValidator');
+const response          = require("../helpers/response.js");
 
 let app                 = express();
 
 //================================ Configs =========================================================================================================
-app.use(express.static(__dirname + '../../public'));                    // set the static files location /public/img will be /img for users
+app.use(express.static(path.join(__dirname , '../../public')));                    // set the static files location /public/img will be /img for users
 app.use(morgan('dev'));                                                 // log every request to the console
 app.use(bodyParser.urlencoded({'extended':'true'}));                    // parse application/x-www-form-urlencoded
 app.use(bodyParser.json());                                             // parse application/json
@@ -45,34 +46,29 @@ app.use(function (req, res, next) {
     /*Pass to next layer of middleware*/
     next();
 });
+//=============================== Add Passport ===============================
+app.use(passport.initialize());
 //=============================== Add Routes =======================================================================================================
-app.use('/', userRoutes);
-app.use('/', gateRoutes);
+app.use('/user', userRoutes);
+app.use('/gate', gateRoutes);
+app.get('/', function(req,res){
+    console.log(__dirname + "../../public/index.html");
+    res.sendFile(path.join(__dirname , '../../public')); // load the single HTML file (angular will handle the page changes on the front-end)
+});
 //==========================Routes for 404, 500=======================================================================================================
-
+// Assume 404 since no middleware responded
+app.use(function(req, res) {
+    response(res, 404, {url: req.originalUrl, error: 'Page not found'},"Page not found");
+});
 app.use(function(err, req, res, next) {
     // If the error object doesn't exists
     if (!err) return next();
-
     // Log it
     console.error(err.stack);
-
-    // Error page
-    res.status(500).render('500', {
-        error: err.stack
-    });
+    response(res, 500, {url: req.originalUrl, error: 'Internal Server Error'},"Internal Server Error");
 });
-
-// Assume 404 since no middleware responded
-app.use(function(req, res) {
-    res.status(404).render('404', {
-        url: req.originalUrl,
-        error: 'Not Found'
-    });
-});
-//=============================== Add Passport ===============================
-app.use(passport.initialize());
 //=============================== Add Form Validation ========================
 // ajv middleware ->
 app.use(validate());
+
 module.exports = app;

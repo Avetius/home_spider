@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Spider</title>
+    <link rel="icon" href="demo_icon.gif" type="image/gif" >
+    <title>Home Spider</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -12,23 +13,46 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div class="container" ng-app="gates">
+<div class="container" ng-app="gates" ng-controller="gateCtrl">
     <div class="row">
         <div class="col-xs-4">
-            <button class="col-xs-12" type="button" class="btn" ng-click="gate1()">Gate 1</button>
+            <button class="col-xs-12" type="button" class="btn" ng-click="openGate(1)">Gate 1</button>
         </div>
         <div class="col-xs-4">
-            <button class="col-xs-12" type="button" class="btn" ng-click="gate2open()">Gate 2 Open</button>
+            <button class="col-xs-12" type="button" class="btn" ng-click="openGate(2)">Gate 2 Open</button>
         </div>
         <div class="col-xs-4">
-            <button class="col-xs-12" type="button" class="btn" ng-click="gate2close()">Gate 2 Close</button>
+            <button class="col-xs-12" type="button" class="btn" ng-click="closeGate(2)">Gate 2 Close</button>
         </div>
     </div>
 </div>
 <script>
 
     let app = angular.module("gates", []);
-
+    app.controller('gateCtrl', function($scope, $http) {
+        $scope.openGate = function (data) {
+            $http.post('/gate/open/'+data)
+                .success(function(data){
+                    $scope.formData = {}; // clear the form so our user is ready to enter another
+                    $scope.product = data;
+                    console.log(data);
+                })
+                .error(function(data){
+                    console.log('Error in $http.post("/gate/open' + data + '"');
+                })
+        };
+        $scope.closeGate = function (data) {
+            $http.post('/gate/close/'+data)
+                .success(function(data){
+                    $scope.formData = {}; // clear the form so our user is ready to enter another
+                    $scope.product = data;
+                    console.log(data);
+                })
+                .error(function(data){
+                    console.log('Error in $http.post("/gate/open' + data + '"');
+                })
+        };
+    });
 </script>
 </body>
 </html>

@@ -29,12 +29,12 @@ broker.on('ready', () => {
     console.log('Mosca server is up and running');
 });
 
-//httpPort    = process.env.PORT || 80,
-let httpsPort   = process.env.PORT || 8088;
+let httpPort    = process.env.PORT || 8088;
+    //httpsPort   = process.env.PORT || 8089;
 // listen (start app with node server.js) ==================================
-//httpServer.listen(httpPort);
-httpsServer.listen(httpsPort);
+httpServer.listen(httpPort);
+//httpsServer.listen(httpsPort);
 
 console.log(chalk.red('home_spider\t\t\t started'));
-console.log(chalk.blue('Port:\t\t\t\t ' + httpsPort));
+console.log(chalk.blue('Port:\t\t\t\t ' + httpPort));
 console.log(chalk.yellow('Database:\t\t\t ' + db.dbName));

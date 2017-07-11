@@ -3,6 +3,3 @@ let mosca = require('mosca'),
     broker = new mosca.Server(settings);
 
 module.exports = broker;
-
-
-
