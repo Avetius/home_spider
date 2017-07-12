@@ -31,7 +31,7 @@
 
     let app = angular.module("gates", []);
     app.controller('gateCtrl', function($scope, $http) {
-        $scope.գateCtrl = function (data) {
+        $scope.gateCtrl = function (data) {
             $http.post('/gate/open/'+data)
                 .success(function(data){
                     $scope.formData = {}; // clear the form so our user is ready to enter another
