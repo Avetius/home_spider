@@ -1,0 +1,8 @@
+body{
+    width: 750px;
+}
+button{
+    height: 120px;
+    line-height: 50px;
+    font-size: 40px;
+}

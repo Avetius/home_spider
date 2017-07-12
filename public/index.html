@@ -11,26 +11,27 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/main.css" >
 </head>
 <body>
 <div class="container" ng-app="gates" ng-controller="gateCtrl">
-    <div class="row">
-        <div class="col-xs-4">
-            <button class="col-xs-12" type="button" class="btn" ng-click="openGate(1)">Gate 1</button>
-        </div>
-        <div class="col-xs-4">
-            <button class="col-xs-12" type="button" class="btn" ng-click="openGate(3)">Gate 2 Open</button>
-        </div>
-        <div class="col-xs-4">
-            <button class="col-xs-12" type="button" class="btn" ng-click="openGate(4)">Gate 2 Close</button>
-        </div>
+    <h1>Դարպասներ</h1>
+    <div class="gateButtons">
+        <button class="col-xs-12" type="button" class="btn" ng-click="գateCtrl(1)">Ալավերդյան բաց․/փակ․</button>
+        <button class="col-xs-12" type="button" class="btn" ng-click="գateCtrl(3)">Վարդանանց բացել</button>
+        <button class="col-xs-12" type="button" class="btn" ng-click="գateCtrl(4)">Վարդանանց փակել</button>
+    </div>
+    <h1>Մուտքի լույս</h1>
+    <div class="gateButtons">
+        <button class="col-xs-12" type="button" class="btn" ng-click="lightCtrl(1)">Միացնել․</button>
+        <button class="col-xs-12" type="button" class="btn" ng-click="lightCtrl(1)">Անջատել</button>
     </div>
 </div>
 <script>
 
     let app = angular.module("gates", []);
     app.controller('gateCtrl', function($scope, $http) {
-        $scope.openGate = function (data) {
+        $scope.գateCtrl = function (data) {
             $http.post('/gate/open/'+data)
                 .success(function(data){
                     $scope.formData = {}; // clear the form so our user is ready to enter another
@@ -41,15 +42,15 @@
                     console.log('Error in $http.post("/gate/open' + data + '"');
                 })
         };
-        $scope.closeGate = function (data) {
-            $http.post('/gate/close/'+data)
+        $scope.lightCtrl = function (data) {
+            $http.post('/light/entrance/'+data)
                 .success(function(data){
                     $scope.formData = {}; // clear the form so our user is ready to enter another
                     $scope.product = data;
                     console.log(data);
                 })
                 .error(function(data){
-                    console.log('Error in $http.post("/gate/open' + data + '"');
+                    console.log('Error in $http.post("/light/open' + data + '"');
                 })
         };
     });
