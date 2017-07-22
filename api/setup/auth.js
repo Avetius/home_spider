@@ -1,11 +1,14 @@
 'use strict';
 
-const User = require('../models/users/user.model.js');
-const passport = require('passport');
-const JwtStrategy = require('passport-jwt').Strategy;
-const ExtractJwt = require('passport-jwt').ExtractJwt;
-const secret = require('../setup/secret.js');
-let opts = {};
+let User = require('../models/users/user.model.js'),
+    passport = require('passport'),
+    configAuth = require('./auth'),
+    JwtStrategy = require('passport-jwt').Strategy,
+    LocalStrategy    = require('passport-local').Strategy,
+    FacebookStrategy = require('passport-facebook').Strategy,
+    ExtractJwt = require('passport-jwt').ExtractJwt,
+    secret = require('../setup/secret.js'),
+    opts = {};
 
 opts.jwtFromRequest = ExtractJwt.fromHeader('access');
 opts.secretOrKey = secret;
@@ -27,7 +30,9 @@ passport.use(new JwtStrategy(opts, (payload, done) => {
     });
 }));
 
-passport.isUser = function (req,res,next){
+
+
+passport.isUser = (req, res, next) => {
     /*passport.authenticate('jwt', { session: false});*/
     console.log("Checking Authentication...");
     /*console.log("req.user -> ", req.user);*/
@@ -38,7 +43,7 @@ passport.isUser = function (req,res,next){
     }
 };
 
-passport.isAdmin = function (req,res,next){
+passport.isAdmin = (req, res, next) => {
     /*passport.authenticate('jwt', { session: false});*/
     console.log("Checking privileges...");
     /*console.log("req.user -> "+req.user);*/
@@ -51,10 +56,37 @@ passport.isAdmin = function (req,res,next){
     }
 };
 
+passport.isLoggedIn = (req, res, next) => {
+
+    // if user is authenticated in the session, carry on
+    if (req.isAuthenticated())
+        return next();
+
+    // if they aren't redirect them to the home page
+    res.redirect('/');
+;
+
+// used to serialize the user for the session
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+});
+
+// used to deserialize the user
+passport.deserializeUser((id, done) => {
+    User.findById(id)
+        .then(user => {
+            done(user);
+        })
+        .catch(err =>{
+            console.log(err);
+        });
+});
+
 module.exports = {
     passport: passport,
     isUser: passport.isUser,
     isAdmin: passport.isAdmin,
+    isLoggedIn: passport.isLoggedIn
 };
 
 //todo add passport strategies for facebook google and tweeter

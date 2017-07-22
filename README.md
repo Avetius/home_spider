@@ -1,3 +1,3 @@
 # home_spider
-bolyolyo
+Home automation and control application for base
 //todo add some description

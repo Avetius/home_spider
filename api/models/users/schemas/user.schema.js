@@ -14,7 +14,7 @@ module.exports = {
         unique: true,
         allowNull: false,
         validate: {
-            len: [4,30],
+            len: [5,30],
             notEmpty: true,
             isAlphanumeric: true
         }
@@ -32,7 +32,53 @@ module.exports = {
     password : {
         type: Sequelize.STRING,
         allowNull: false,
-        validate: {len: [5,20]}
+        validate: {
+            len: [10,40],
+            isAlphanumeric: true
+        }
+    },
+    firstname: {
+        type: Sequelize.STRING,
+        unique: false,
+        allowNull: false,
+        validate: {
+            len: [1,40],
+            notEmpty: true,
+            is: ["^[a-z]+$",'i']
+        }
+    },
+    lastname: {
+        type: Sequelize.STRING,
+        unique: false,
+        allowNull: false,
+        validate: {
+            len: [1,40],
+            notEmpty: true,
+            is: ["^[a-z]+$",'i'],
+        }
+    },
+    facebookId: {
+        type: Sequelize.STRING
+    },
+    ownPropertyIds:{
+        type: Sequelize.STRING,
+    },
+    sharedPropertyIds:{
+        type: Sequelize.STRING,
+    },
+    verifyToken: {
+        type: String
+    },
+    verified: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+    },
+    /* For reset password */
+    resetPasswordToken: {
+        type: Sequelize.STRING
+    },
+    resetPasswordExpires: {
+        type: Sequelize.DATE
     },
     accessToken : {
         type : Sequelize.STRING
