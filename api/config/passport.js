@@ -34,7 +34,7 @@ module.exports = function(passport) {
     // FACEBOOK ================================================================
     // =========================================================================
     passport.use(new FacebookStrategy({
-        // pull in our app id and secret from our auth.js file
+        // pull in our app id and secret from our authCtrl.js file
         clientID        : configAuth.facebookAuth.clientID,
         clientSecret    : configAuth.facebookAuth.clientSecret,
         callbackURL     : configAuth.facebookAuth.callbackURL

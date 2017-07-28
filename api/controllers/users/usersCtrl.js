@@ -155,3 +155,19 @@ exports.upload = (req, res, next) => {
     });
 
 };
+
+exports.renderUser = (req, res, next) => {
+    res.send({
+        user : req.user // get the user out of session and pass to template
+    });
+};
+
+exports.logout = (req, res, next) => {
+    req.logout();
+    res.redirect('/');
+};
+
+exports.authPage = (req, res, next) => {
+    console.log('qaq');
+    res.render('index.ejs'); // load the index.ejs file
+};

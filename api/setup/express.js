@@ -1,24 +1,25 @@
 /**
  * Created by sirius on 5/12/17.
  */
-const express           = require('express');
-const morgan            = require('morgan');                            // logger
-const bodyParser        = require('body-parser');                       // add req.body object to req
-const methodOverride    = require('method-override');                   // simulate DELETE and PUT
-const compression       = require('compression');                       // compress req & res to gzip (increases speed and security)
-const helmet            = require('helmet');
-const path              = require('path');
-const userRoutes        = require('../routes/users/usersRoutes.js');
-const gateRoutes        = require('../routes/gates/gatesRoutes.js');
-const lightRoutes       = require('../routes/lights/lightsRoutes.js');
-const passport          = require('./auth.js').passport;
-const validate          = require('../validation/user.validator.js');   //for ajv validator -> require('../validation/user.validator.js'); require('../validation/expressValidator');
-const response          = require("../helpers/response.js");
+let express         = require('express'),
+    morgan          = require('morgan'),                            // logger
+    bodyParser      = require('body-parser'),                       // add req.body object to req
+    methodOverride  = require('method-override'),                   // simulate DELETE and PUT
+    compression     = require('compression'),                   // compress req & res to gzip (increases speed and security)
+    helmet          = require('helmet'),
+    path            = require('path'),
+    userRoutes      = require('../routes/users/usersRoutes.js'),
+    gateRoutes      = require('../routes/gates/gatesRoutes.js'),
+    lightRoutes     = require('../routes/lights/lightsRoutes.js'),
+    passport        = require('./auth.js').passport,
+    validate        = require('../validation/user.validator.js'),   //for ajv validator -> require('../validation/user.validator.js'); require('../validation/expressValidator');
+    response        = require("../helpers/response.js"),
 
-let app                 = express();
+    app               = express();
 
 //================================ Configs =========================================================================================================
-app.use(express.static(path.join(__dirname , '../../public')));                    // set the static files location /public/img will be /img for users
+app.use(express.static(path.join(__dirname , '../../public')));// set the static files location /public/img will be /img for users
+/*app.set('view engine', 'ejs');*/
 app.use(morgan('dev'));                                                 // log every request to the console
 app.use(bodyParser.urlencoded({'extended':'true'}));                    // parse application/x-www-form-urlencoded
 app.use(bodyParser.json());                                             // parse application/json

@@ -12,14 +12,3 @@ exports.action = (req, res, next) => {
         res.send('OK');
     });
 };
-
-exports.renderUser = (req, res, next) => {
-    res.send({
-        user : req.user // get the user out of session and pass to template
-    });
-};
-
-exports.logout = (req, res, next) => {
-    req.logout();
-    res.redirect('/');
-};

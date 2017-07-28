@@ -32,6 +32,8 @@
     "multer": "latest",
     "passport": "latest",
     "passport-jwt": "latest",
+    "passport-local": "latest",
+    "passport-facebook": "latest",
     "pg": "latest",
     "pg-hstore": "latest",
     "sequelize": "latest"

@@ -6,7 +6,9 @@ let router      = require('express').Router(),
     isAdmin     = require('../../setup/auth.js').isAdmin,
     isUser      = require('../../setup/auth.js').isUser,
     passport    = require('../../setup/auth.js').passport,
-    validate    = require('../../validation/user.validator.js');
+    validate    = require('../../validation/user.validator.js'),
+    isLoggedIn  = require('../../setup/auth.js').isLoggedIn;
+
 
 router
     .post('/signup',                                                                    validate('userSignUp'), userCtrl.signup)
@@ -20,6 +22,21 @@ router
     .get('/all',    passport.authenticate('jwt',{ session: false}), isAdmin,                           userCtrl.userGetAll)
     .get('/:id',    passport.authenticate('jwt',{ session: false}), isAdmin,                           userCtrl.userGet)
     .put('/:id',    passport.authenticate('jwt',{ session: false}), isAdmin,   validate('userEdit'),   userCtrl.userEdit)
-    .delete('/:id', passport.authenticate('jwt',{ session: false}), isAdmin,                           userCtrl.userDelete);
+    .delete('/:id', passport.authenticate('jwt',{ session: false}), isAdmin,                           userCtrl.userDelete)
+    // route for showing the profile page
+    .get('/a', userCtrl.authPage)
+    .get('/profile', isLoggedIn, userCtrl.renderUser)
+    // =====================================
+    // FACEBOOK ROUTES =====================
+    // =====================================
+    // route for facebook auth and login
+    .get('/facebook', passport.authenticate('facebook', { scope : 'email' }))
+    // handle the callback after facebook has authenticated the user
+    .get('/facebook/callback', passport.authenticate('facebook', {
+        successRedirect : '/profile',
+        failureRedirect : '/'
+    }))
+    // route for logging out
+    .get('/logout', userCtrl.logout);
 
 module.exports = router;

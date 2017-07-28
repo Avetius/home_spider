@@ -1,15 +1,15 @@
 /**
  * Created by sirius on 7/20/17.
  */
-// config/auth.js
+// config/authCtrl.js
 
 // expose our config directly to our application using module.exports
 module.exports = {
 
     'facebookAuth' : {
-        'clientID'      : 'your-secret-clientID-here', // your App ID
-        'clientSecret'  : 'your-client-secret-here', // your App Secret
-        'callbackURL'   : 'http://localhost:8080/auth/facebook/callback'
+        'clientID'      : '1073712569425481', // your App ID
+        'clientSecret'  : '83772d350e0a5e9d58977587f7918f6f', // your App Secret
+        'callbackURL'   : 'http://localhost:8088/user/auth/facebook/callback'
     },
 
     'twitterAuth' : {
