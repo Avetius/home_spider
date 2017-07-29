@@ -49,7 +49,7 @@ app.use(function (req, res, next) {
     next();
 });
 //=============================== Add Passport ===============================
-app.use(passport.initialize());
+//sapp.use(passport.initialize());
 //=============================== Add Routes =======================================================================================================
 app.use('/user', userRoutes);
 app.use('/gate', gateRoutes);
