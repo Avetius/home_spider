@@ -19,7 +19,7 @@ let express         = require('express'),
 
 //================================ Configs =========================================================================================================
 app.use(express.static(path.join(__dirname , '../../public')));// set the static files location /public/img will be /img for users
-app.set('view engine', 'ejs');*/
+app.set('view engine', 'ejs');
 app.use(morgan('dev'));                                                 // log every request to the console
 app.use(bodyParser.urlencoded({'extended':'true'}));                    // parse application/x-www-form-urlencoded
 app.use(bodyParser.json());                                             // parse application/json
