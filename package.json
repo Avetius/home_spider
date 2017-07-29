@@ -23,6 +23,7 @@
     "cookie-parser": "latest",
     "crypto-js": "latest",
     "express": "latest",
+    "ejs":"latest",
     "helmet": "latest",
     "jwt-simple": "latest",
     "method-override": "latest",
