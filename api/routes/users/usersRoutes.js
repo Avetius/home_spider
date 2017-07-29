@@ -20,8 +20,8 @@ router
     //================================= Admin routes =================================================================================
     .post('/new',   passport.authenticate('jwt',{ session: false}), isAdmin,   validate('userCreate'), userCtrl.userCreate)
     .get('/all',    passport.authenticate('jwt',{ session: false}), isAdmin,                           userCtrl.userGetAll)
-    .get('/:id',    passport.authenticate('jwt',{ session: false}), isAdmin,                           userCtrl.userGet)
-    .put('/:id',    passport.authenticate('jwt',{ session: false}), isAdmin,   validate('userEdit'),   userCtrl.userEdit)
+    .get('/id/:id',    passport.authenticate('jwt',{ session: false}), isAdmin,                           userCtrl.userGet)
+    .put('/id/:id',    passport.authenticate('jwt',{ session: false}), isAdmin,   validate('userEdit'),   userCtrl.userEdit)
     .delete('/:id', passport.authenticate('jwt',{ session: false}), isAdmin,                           userCtrl.userDelete)
     // route for showing the profile page
     .get('/a', userCtrl.authPage)
