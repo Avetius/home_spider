@@ -32,7 +32,7 @@ broker.on('ready', () => {
 let httpPort    = process.env.PORT || 8088;
     //httpsPort   = process.env.PORT || 8089;
 // listen (start app with node server.js) ==================================
-httpServer.listen(httpPort);
+httpServer.listen(httpPort,'localhost');
 //httpsServer.listen(httpsPort);
 
 console.log(chalk.red('home_spider\t\t\t started'));
