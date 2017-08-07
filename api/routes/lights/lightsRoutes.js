@@ -9,6 +9,6 @@ let router      = require('express').Router(),
     validate    = require('../../validation/user.validator.js');
 
 router
-    .post('/entrance/:action',  /*passport.authenticate('jwt',{ session: false}), isAdmin, validate('gateCtrl'),*/ lightCtrl.action);
+    .post('/entrance/:number',  /*passport.authenticate('jwt',{ session: false}), isAdmin, validate('gateCtrl'),*/ lightCtrl.action);
 
 module.exports = router;
