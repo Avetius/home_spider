@@ -1,9 +1,6 @@
-/**
- * Created by sirius on 7/12/17.
- */
 let broker = require('../../broker/mosca');
 
-exports.action = (req, res) => {
+exports.action = (req, res, next) => {
     let message = {
         topic: 'Light/sub',
         payload: req.params.number, // or a Buffer
