@@ -11,6 +11,7 @@ let express         = require('express'),
     userRoutes      = require('../routes/users/usersRoutes.js'),
     gateRoutes      = require('../routes/gates/gatesRoutes.js'),
     lightRoutes     = require('../routes/lights/lightsRoutes.js'),
+    meterRoutes     = require('../routes/meters/metersRoutes.js'),
     passport        = require('./auth.js').passport,
     validate        = require('../validation/user.validator.js'),   //for ajv validator -> require('../validation/user.validator.js'); require('../validation/expressValidator');
     response        = require("../helpers/response.js"),
@@ -55,6 +56,7 @@ app.use(passport.initialize());
 app.use('/user', userRoutes);
 app.use('/gate', gateRoutes);
 app.use('/light', lightRoutes);
+app.use('/meters', meterRoutes);
 app.get('/', function(req,res){
     console.log(__dirname + "../../public/index.html");
     res.sendFile(path.join(__dirname , '../../public')); // load the single HTML file (angular will handle the page changes on the front-end)
