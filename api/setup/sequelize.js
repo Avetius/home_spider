@@ -1,11 +1,11 @@
 /**
- * Created by suren on 5/15/17.
+ * Created by sirius on 5/15/17.
  */
+
 const Sequelize = require('sequelize');
-const db = require('./db.js');
-const connectionString = db.dbType+'://'+db.username+':'+db.password+'@'+db.hostname+':'+db.port+'/'+db.dbName; // like 'mysql://root:root@localhost:3306/ralf_jos10'
-/*sequelize = new Sequelize(connectionString);*/
-const sequelize = new Sequelize(db.dbName,db.username,db.password,{
+const db = require('../config/db.js')[devMode];
+
+const sequelize = new Sequelize(db.dbName,db.username,db.password,{ // alternative way sequelize = new Sequelize(connectionString); const connectionString = db.dbType+'://'+db.username+':'+db.password+'@'+db.hostname+':'+db.port+'/'+db.dbName; // like 'mysql://root:root@localhost:3306/ralf_jos10'
     host: db.hostname,
     dialect: db.dbType,
     logging: false, // print in console log when true
@@ -16,7 +16,7 @@ const sequelize = new Sequelize(db.dbName,db.username,db.password,{
     },
     define: {
         timestamps: true,     // Do Not add created_at and updated_at
-        freezeTableName: true, // force not to change table name to multiple
+        //freezeTableName: true, // force not to change table name to multiple
         underscored: true      // use snake_case rather than camelCase
     }
 });
