@@ -49,7 +49,7 @@ exports.authenticate = function(client, username, password, callback) {
 // In this case the client authorized as alice can publish to /usersRules/alice taking
 // the username from the topic and verifing it is the same of the authorized user
 exports.authorizePublish = function(client, topic, payload, callback) {
-    callback(null, true); // (client.user === topic.split('/')[1]) || (client.user === 'barrier_naftihayat1/pub')
+    callback(null, client.user + '/sub' === topic); // (client.user === topic.split('/')[1]) || (client.user === 'barrier_naftihayat1/pub') condition must return true
 };
 
 // In this case the client authorized as alice can subscribe to /usersRules/alice taking

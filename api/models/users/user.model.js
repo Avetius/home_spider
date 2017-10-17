@@ -8,27 +8,69 @@ const bcrypt        = require('bcrypt-nodejs');
 const Sequelize     = require('../../setup/sequelize.js');
 const secret        = require('../../setup/secret');
 const UserSchema    = require('./user.schema.js');
-
-const User = Sequelize.define( 'User', UserSchema);
+const User          = Sequelize.define( 'User', UserSchema);
 
 User.beforeCreate((user, options) => {
     user.password = bcrypt.hashSync(user.password);//, bcrypt.genSaltSync(8), null);
     return user;
 });
-User.sync({force: true})
+
+User.sync({force: false})
     .then(() => {
         /*return User;*/
-        return User.create({
+        return User.bulkCreate([
+        {
             firstname: "Avet",
             lastname: "Sargsyan",
             emailVerified: true,
             username: 'Owner',
             privil: 'owner',
             email: 'avet.sargsyan@gmail.com',
-            subTopic: "avet.sargsyan@gmail.com/sub",
-            password: 'pic16f84a'
-        })
+            subTopic: 'avet.sargsyan@gmail.com/sub',
+            password: bcrypt.hashSync('pic16f84a')
+        },{
+            firstname: "Poghos",
+            lastname: "Poghosyan",
+            emailVerified: true,
+            username: 'verified_admin',
+            privil: 'admin',
+            email: 'verified_admin@gmail.com',
+            subTopic: 'verified_admin@gmail.com/sub',
+            password: bcrypt.hashSync('pic16f84a')
+        },{
+            firstname: "Petros",
+            lastname: "Petrosyan",
+            emailVerified: false,
+            username: 'unverified_user',
+            privil: 'user',
+            email: 'dozenoffner@gmail.com',
+            subTopic: 'dozenoffner@gmail.com/sub',
+            password: bcrypt.hashSync('pic16f84a')
+        },{
+            firstname: "Martiros",
+            lastname: "Martirosyan",
+            emailVerified: false,
+            username: 'unverified_admin',
+            privil: 'admin',
+            email: 'azathaymard@gmail.com',
+            subTopic: "azathaymard@gmail.com/sub",
+            password: bcrypt.hashSync('pic16f84a')
+        }]).then(console.log('Users are synchronized'));
     });
+
+
+/*
+ User.create({
+ firstname: "Avet",
+ lastname: "Sargsyan",
+ emailVerified: true,
+ username: 'Owner',
+ privil: 'owner',
+ email: 'avet.sargsyan@gmail.com',
+ subTopic: 'avet.sargsyan@gmail.com/sub',
+ password: 'pic16f84a'
+ })
+ */
 
 /*
 
