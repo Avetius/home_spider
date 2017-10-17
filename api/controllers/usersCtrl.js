@@ -17,7 +17,8 @@ const upload        = require('../setup/fileUploader.js');
 exports.login = (req, res, next) => {
     return User.findOne({
         where:{
-            email: req.body.email
+            email: req.body.email,
+            emailVerified: true
         }
     }).then(user => {
         if(user){

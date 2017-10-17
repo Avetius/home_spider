@@ -1,6 +1,5 @@
 /**
  * Created by sirius on 5/20/17.
- * todo check at signup wether mail, username ... are available
  */
 'use strict';
 
@@ -16,17 +15,17 @@ User.beforeCreate((user, options) => {
     user.password = bcrypt.hashSync(user.password);//, bcrypt.genSaltSync(8), null);
     return user;
 });
-
-User.sync({force: false})
+User.sync({force: true})
     .then(() => {
         /*return User;*/
         return User.create({
             firstname: "Avet",
             lastname: "Sargsyan",
-            subTopic: "avet.sargsyan@gmail.com",
+            emailVerified: true,
             username: 'Owner',
             privil: 'owner',
             email: 'avet.sargsyan@gmail.com',
+            subTopic: "avet.sargsyan@gmail.com/sub",
             password: 'pic16f84a'
         })
     });
@@ -145,6 +144,7 @@ User.availbaleCredentials = function (uname, mail) {
             });
         }
     });
+    //todo check at signup wether mail, username ... are available
 };
 
 User.signup = function (userObj) {

@@ -29,7 +29,8 @@ exports.authenticate = function(client, username, password, callback) {
     }else{
         User.findOne({ // (username === 'avet' && password.toString() === '333')
             where: {
-                email: username
+                email: username,
+                emailVerified: true
             }
         }).then(user => {
             if (!user) return null;
@@ -54,5 +55,5 @@ exports.authorizePublish = function(client, topic, payload, callback) {
 // In this case the client authorized as alice can subscribe to /usersRules/alice taking
 // the username from the topic and verifing it is the same of the authorized user
 exports.authorizeSubscribe = function(client, topic, callback) {
-    callback(null, true); // client.user === topic.split('/')[1] || (client.user === 'avet.sargsyan@gmail.com/sub')
+    callback(null, client.user + '/sub' === topic); // client.user === topic.split('/')[1] || (client.user === 'avet.sargsyan@gmail.com/sub')
 };

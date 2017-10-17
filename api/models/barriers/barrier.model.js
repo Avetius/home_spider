@@ -12,7 +12,7 @@ Barrier.beforeCreate((barrier, options) => {
     return barrier;
 });
 
-Barrier.sync({force: false})
+Barrier.sync({force: true})
     .then(() => {
         /*return Barrier;*/
         return Barrier.create({
@@ -22,7 +22,7 @@ Barrier.sync({force: false})
             button1name: "",
             button2name: "Վարդանանց 14/1 բացել",
             button3name: "Վարդանանց 14/1 փակել",
-            pubTopic: 'barrier_naftihayat1/pub',
+            willTopic: 'barrier_naftihayat1/will',
             subTopic: 'barrier_naftihayat1/sub',
             longitude: '40.176851',
             latitude: '44.518069',

@@ -90,7 +90,8 @@ exports.login = new LocalStrategy({
             // we are checking to see if the user trying to login already exists
             User.findOne({
                 where: {
-                    email: email
+                    email: email,
+                    emailVerified: true
                 }
             }).then(user => {
                 // if no user is found, return the message

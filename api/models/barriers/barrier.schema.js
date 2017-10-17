@@ -11,7 +11,7 @@ module.exports = {
     },
     name : {type: Sequelize.STRING},
     password : {type: Sequelize.STRING},
-    pubTopic : {type: Sequelize.STRING},
+    willTopic : {type: Sequelize.STRING},
     subTopic : {type: Sequelize.STRING},
     button0name : { type: Sequelize.STRING},
     button1name : { type: Sequelize.STRING},

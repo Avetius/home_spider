@@ -11,21 +11,20 @@ const mailer = nodemailer.createTransport({
     }
 });
 
-/*
-let mailOptions = { // test mail
-    from: 'barriercontroller@gmail.com',
-    to: 'avet.sargsyan@gmail.com',
-    subject: 'Testing Node.js mailsender',
-    html: '<h1>Please confirm registration ;)</h1><p>That was easy!</p><a href="heroku.com"></a>'
-};
-
-mailer.sendMail(mailOptions, (err, info) => { // sending test mail
-    if (err) {
-        console.log(chalk.red('Failed to send mail -> '+err));
-    } else {
-        console.log(chalk.greenBright('Email sent: '+info.response));
-    }
-});
-*/
-
 module.exports = mailer;
+/*
+ let mailOptions = { // test mail
+ from: 'barriercontroller@gmail.com',
+ to: 'avet.sargsyan@gmail.com',
+ subject: 'Testing Node.js mailsender',
+ html: '<h1>Please confirm registration ;)</h1><p>That was easy!</p><a href="heroku.com"></a>'
+ };
+
+ mailer.sendMail(mailOptions, (err, info) => { // sending test mail
+ if (err) {
+ console.log(chalk.red('Failed to send mail -> '+err));
+ } else {
+ console.log(chalk.greenBright('Email sent: '+info.response));
+ }
+ });
+ */

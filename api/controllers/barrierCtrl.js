@@ -1,5 +1,6 @@
 /**
  * Created by sirius on 10/12/17.
+ * todo add ctrl to getAll, getById, getByUser
  */
 const bcrypt        = require('bcrypt-nodejs');
 const Barrier       = require('../models/barriers/barrier.model');
@@ -15,6 +16,7 @@ exports.create = (req, res, next) => {
         button2name: req.body.button2name,
         button3name: req.body.button3name,
         pubTopic: req.body.name+'/pub',
+        willTopic: req.body.name+'/will',
         longitude: req.body.longitude,
         latitude: req.body.latitude,
         altitude: req.body.altitude
@@ -45,7 +47,6 @@ exports.update = (req, res, next) => {
         {
             name: req.body.name,
             password: bcrypt.hashSync(req.body.password),
-            pubTopic: req.body.pubTopic,
             button0name: req.body.button0name,
             button1name: req.body.button1name,
             button2name: req.body.button2name,

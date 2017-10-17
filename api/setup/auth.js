@@ -1,4 +1,5 @@
 //todo add passport strategies for facebook google and tweeter
+
 'use strict';
 
 const User = require('../models/users/user.model.js');
@@ -71,4 +72,3 @@ module.exports = {
     isAdmin: passport.isAdmin,
     isLoggedIn: passport.isLoggedIn
 };
-
