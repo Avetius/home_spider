@@ -12,12 +12,13 @@ User.belongsToMany(Barrier, { through: 'UsersBarriers' });
 Barrier.belongsToMany(User, { through: 'UsersBarriers' });
 
 /*
-UsersBarriers.sync({force: false})
+
+UsersBarriers.sync({force: true})
     .then(() => {
     console.log('UsersBarriers are synched...');
         return UsersBarriers;
         /!*usersBarriers.create({*!/
     });
-    */
+*/
 
 module.exports = UsersBarriers;

@@ -70,15 +70,13 @@ exports.update = (req, res, next) => {
 };
 
 exports.uptRel = (req,res, next) => {
-    Barrier.find({
-        where: {id:req.params.id}
-    })
+    Barrier.findById(req.params.id)
         .then(barrier => {
             if(!barrier) response(res, 404, err, "barrier with that id not found");
-            return barrier.setUser(req.body.id);
+            return barrier.addUser(req.body.id).then(response(res, 200, {user_id:req.body.id,barrier_id:req.params.id}, "successfully binded"));
         })
         /*.then(res.send.bind(res))*/
-        .catch(err => {return response(res, 404, err, "uptRel query error") })
+        .catch(err => {console.log('err in uptRel -> ',err); return response(res, 404, err, "uptRel query error") })
 };
 
 exports.delete = (req, res, next) => {
@@ -104,17 +102,17 @@ exports.getAll = (req, res, next) => {
 };
 
 exports.getById = (req, res, next) => {
-    Barrier.findById(req.params.id).then(barriers =>{
-        if(!barriers) return response(res, 404, {}, "not found");
-        return response(res, 200, {}, "success")
+    Barrier.findById(req.params.id).then(barrier =>{
+        if(!barrier) return response(res, 404, {}, "not found");
+        return response(res, 200, barrier, "success")
     });
 };
 
 exports.getByUser = (req, res, next) => {
     Barrier.findOne({
         where: {email:req.user}
-    }).then(barriers =>{
-        if(!barriers) return response(res, 404, {}, "not found");
-        return response(res, 200, {}, "success")
+    }).then(barrier =>{
+        if(!barrier) return response(res, 404, {}, "not found");
+        return response(res, 200, barrier, "success")
     });
 };
