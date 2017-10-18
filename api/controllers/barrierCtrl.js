@@ -69,11 +69,25 @@ exports.update = (req, res, next) => {
     }).catch(err =>{ return response(res, 404, err, "not found") })
 };
 
-exports.uptRel = (req,res, next) => {
+exports.setRel = (req,res, next) => {
     Barrier.findById(req.params.id)
         .then(barrier => {
             if(!barrier) response(res, 404, err, "barrier with that id not found");
-            return barrier.addUser(req.body.id).then(response(res, 200, {user_id:req.body.id,barrier_id:req.params.id}, "successfully binded"));
+            return barrier.addUser(req.body.id)
+                .then(response(res, 200, {user_id:req.body.id,barrier_id:req.params.id}, "successfully binded"))
+                .catch(response(res, 404, err, "problems with adding or setting a user"))
+        })
+        /*.then(res.send.bind(res))*/
+        .catch(err => {console.log('err in uptRel -> ',err); return response(res, 404, err, "uptRel query error") })
+};
+
+exports.addRel = (req,res, next) => {
+    Barrier.findById(req.params.id)
+        .then(barrier => {
+            if(!barrier) response(res, 404, err, "barrier with that id not found");
+            return barrier.addUser(req.body.id)
+                .then(response(res, 200, {user_id:req.body.id,barrier_id:req.params.id}, "successfully binded"))
+                .catch(response(res, 404, err, "problems with adding or setting a user"))
         })
         /*.then(res.send.bind(res))*/
         .catch(err => {console.log('err in uptRel -> ',err); return response(res, 404, err, "uptRel query error") })
@@ -92,6 +106,28 @@ exports.delete = (req, res, next) => {
 
 exports.getAll = (req, res, next) => {
     console.log('barrierCtrl getAll...');
+    Barrier.findAll().then(barriers =>{
+        if(!barriers) return response(res, 404, {}, "getAll barriers not found");
+        return response(res, 200, barriers, "success")
+    }).catch(err => {
+        console.log('err -> ',err);
+        return response(res, 404, err, "getAll query error")
+    })
+};
+
+exports.getByIdRel = (req, res, next) => {
+    console.log('barrierCtrl getRels...');
+    Barrier.findAll( {where:req.query, include: [{all: true}]} ).then(barriers =>{
+        if(!barriers) return response(res, 404, {}, "getAll barriers not found");
+        return response(res, 200, barriers, "success")
+    }).catch(err => {
+        console.log('err -> ',err);
+        return response(res, 404, err, "getAll query error")
+    })
+};
+
+exports.getAllRel = (req, res, next) => {
+    console.log('barrierCtrl getRels...');
     Barrier.findAll( {where:req.query, include: [{all: true}]} ).then(barriers =>{
         if(!barriers) return response(res, 404, {}, "getAll barriers not found");
         return response(res, 200, barriers, "success")
@@ -108,7 +144,7 @@ exports.getById = (req, res, next) => {
     });
 };
 
-exports.getByUser = (req, res, next) => {
+exports.getByName = (req, res, next) => {
     Barrier.findOne({
         where: {email:req.user}
     }).then(barrier =>{
