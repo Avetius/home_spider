@@ -11,14 +11,15 @@ Barrier.beforeCreate((barrier, options) => {
     barrier.password = bcrypt.hashSync(barrier.password);//, bcrypt.genSaltSync(8), null);
     return barrier;
 });
+/*
 
 Barrier.sync({force: true})
     .then(() => {
-        /*return Barrier;*/
+        /!*return Barrier;*!/
         return Barrier.bulkCreate([
         {
             name: "barrier_naftihayat1",
-            password: 'pic16f84a',
+            password: bcrypt.hashSync('pic16f84a'),
             button0name: "Հանրապետության 58",
             button1name: "",
             button2name: "Վարդանանց 14/1 բացել",
@@ -30,7 +31,7 @@ Barrier.sync({force: true})
             altitude: '3'
         },{
             name: "barrier_naftihayat2",
-            password: 'pic16f84a',
+            password: bcrypt.hashSync('pic16f84a'),
             button0name: "Հանրապետության 59",
             button1name: "",
             button2name: "Վարդանանց 14/1 բացել",
@@ -42,7 +43,7 @@ Barrier.sync({force: true})
             altitude: '3.5'
         },{
             name: "barrier_naftihayat3",
-            password: 'pic16f84a',
+            password: bcrypt.hashSync('pic16f84a'),
             button0name: "Հանրապետության 60",
             button1name: "",
             button2name: "Վարդանանց 14/1 բացել",
@@ -54,7 +55,7 @@ Barrier.sync({force: true})
             altitude: '2.9'
         },{
             name: "barrier_naftihayat4",
-            password: 'pic16f84a',
+            password: bcrypt.hashSync('pic16f84a'),
             button0name: "Հանրապետության 57",
             button1name: "",
             button2name: "Վարդանանց 14/1 բացել",
@@ -66,6 +67,8 @@ Barrier.sync({force: true})
             altitude: '4'
         }]).then(console.log('Barriers are synchronized'))
 });
+*/
+
 
 /*
  Barrier.create({

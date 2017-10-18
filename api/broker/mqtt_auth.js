@@ -1,9 +1,10 @@
 /**
  * Created by sirius on 10/11/17.
  */
-const User      = require('../models/users/user.model');
-const Barrier   = require('../models/barriers/barrier.model');
-const bcrypt    = require('bcrypt-nodejs');
+const User              = require('../models/users/user.model');
+const Barrier           = require('../models/barriers/barrier.model');
+const relUserBarrier    = require('../models/relations/relation.models');
+const bcrypt            = require('bcrypt-nodejs');
 
 // Accepts the connection if the username and password are valid
 exports.authenticate = function(client, username, password, callback) {
@@ -49,7 +50,26 @@ exports.authenticate = function(client, username, password, callback) {
 // In this case the client authorized as alice can publish to /usersRules/alice taking
 // the username from the topic and verifing it is the same of the authorized user
 exports.authorizePublish = function(client, topic, payload, callback) {
-    callback(null, client.user + '/sub' === topic); // (client.user === topic.split('/')[1]) || (client.user === 'barrier_naftihayat1/pub') condition must return true
+    if(username.includes('barrier_')) {
+        Barrier.find({
+                where: {name: client.user},
+                include: [{model: User}]
+            }
+        )
+            .then(function (barrier) {
+                console.log('barrier joined user query -> ', barrier);
+            });
+        callback(null, client.user + '/sub' === topic); // (client.user === topic.split('/')[1]) || (client.user === 'barrier_naftihayat1/pub') condition must return true
+    }else{
+        User.find({
+                where: {email: client.user},
+                include: [{model: Barrier}]
+            }
+        ).then(function (user) {
+            console.log('user joined barrier query -> ', user);
+        });
+        callback(null, client.user + '/sub' === topic); // (client.user === topic.split('/')[1]) || (client.user === 'barrier_naftihayat1/pub') condition must return true
+    }
 };
 
 // In this case the client authorized as alice can subscribe to /usersRules/alice taking

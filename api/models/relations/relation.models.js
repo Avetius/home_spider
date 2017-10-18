@@ -1,11 +1,23 @@
 /**
  * Created by sirius on 10/13/17.
  */
+const Sequelize     = require('../../setup/sequelize.js');
 const User = require('../users/user.model.js');
 const Barrier = require('../barriers/barrier.model.js');
-const RelUserBarrierSchema = require('./relation.schema');
+const UsersBarriersSchema = require('./relation.schema');
 
-const RelUserBarrier = sequelize.define('userProjects', RelUserBarrierSchema)
+const UsersBarriers = Sequelize.define('UsersBarriers', UsersBarriersSchema);
 
-User.belongsToMany(Barrier, { through: RelUserBarrier });
-Barrier.belongsToMany(User, { through: RelUserBarrier });
+User.belongsToMany(Barrier, { through: 'UsersBarriers' });
+Barrier.belongsToMany(User, { through: 'UsersBarriers' });
+
+/*
+UsersBarriers.sync({force: false})
+    .then(() => {
+    console.log('UsersBarriers are synched...');
+        return UsersBarriers;
+        /!*usersBarriers.create({*!/
+    });
+    */
+
+module.exports = UsersBarriers;

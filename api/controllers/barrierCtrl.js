@@ -4,6 +4,7 @@
  */
 const bcrypt        = require('bcrypt-nodejs');
 const Barrier       = require('../models/barriers/barrier.model');
+const User          = require('../models/users/user.model');
 const errorHandler  = require('../helpers/errorHandler.js');
 const response      = require('../helpers/response.js');
 
@@ -60,15 +61,24 @@ exports.update = (req, res, next) => {
         console.log('updated in updated -> ',updated);
         return Barrier.findById(id).then((barrier) => {
             console.log('barrier in updated -> ',barrier);
-            if(barrier.name){
-                return response(res, 200, {asd:"asd"}, "success")
-            }
+            if(!barrier.name) return response(res, 404, {}, "not found!");
+            return response(res, 200, {asd:"asd"}, "success")
         }).catch(err =>{
-            return response(res, 401, err, "failed")
+            return response(res, 404, err, "not found")
         })
-    }).catch(err =>{
-        return response(res, 401, err, "failed")
+    }).catch(err =>{ return response(res, 404, err, "not found") })
+};
+
+exports.uptRel = (req,res, next) => {
+    Barrier.find({
+        where: {id:req.params.id}
     })
+        .then(barrier => {
+            if(!barrier) response(res, 404, err, "barrier with that id not found");
+            return barrier.setUser(req.body.id);
+        })
+        /*.then(res.send.bind(res))*/
+        .catch(err => {return response(res, 404, err, "uptRel query error") })
 };
 
 exports.delete = (req, res, next) => {
@@ -84,15 +94,27 @@ exports.delete = (req, res, next) => {
 
 exports.getAll = (req, res, next) => {
     console.log('barrierCtrl getAll...');
-    res.send({});
+    Barrier.findAll( {where:req.query, include: [{all: true}]} ).then(barriers =>{
+        if(!barriers) return response(res, 404, {}, "getAll barriers not found");
+        return response(res, 200, barriers, "success")
+    }).catch(err => {
+        console.log('err -> ',err);
+        return response(res, 404, err, "getAll query error")
+    })
 };
 
 exports.getById = (req, res, next) => {
-    console.log('barrierCtrl getById...');
-    res.send({});
+    Barrier.findById(req.params.id).then(barriers =>{
+        if(!barriers) return response(res, 404, {}, "not found");
+        return response(res, 200, {}, "success")
+    });
 };
 
 exports.getByUser = (req, res, next) => {
-    console.log('barrierCtrl getByUser...');
-    res.send({});
+    Barrier.findOne({
+        where: {email:req.user}
+    }).then(barriers =>{
+        if(!barriers) return response(res, 404, {}, "not found");
+        return response(res, 200, {}, "success")
+    });
 };

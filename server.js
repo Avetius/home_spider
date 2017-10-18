@@ -14,12 +14,13 @@ if(devMode === "heroku"){
     const httpServer        = http.createServer(app);
     httpServer.listen(port); // httpPort, 'localhost'
 }else{
-    port                    = process.env.PORT || 8089;
-    const privateKey        = fs.readFileSync('./sslcert/certificate.key', 'utf8');
+    port                    = process.env.PORT || 8089; // 8089
+    /*const privateKey        = fs.readFileSync('./sslcert/certificate.key', 'utf8');
     const certificate       = fs.readFileSync('./sslcert/certificate.crt', 'utf8');
     const credentials       = {key: privateKey, cert: certificate};
-    const https             = require('https');
-    const httpsServer       = https.createServer(credentials, app);
+    const https             = require('https');*/
+    const http              = require('http');
+    const httpsServer       = http.createServer(app); // https.createServer(credentials, app);
     httpsServer.listen(port);
 }
 
