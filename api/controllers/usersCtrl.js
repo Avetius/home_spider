@@ -15,63 +15,14 @@ const upload        = require('../setup/fileUploader.js');
  * Login
  * */
 exports.login = (req, res, next) => {
-    return User.findOne({
-        where:{
-            email: req.body.email,
-            emailVerified: true
-        }
-    }).then(user => {
-        if(user){
-            let userinfo = {
-                firstname : user.firstname,
-                lastname  : user.lastname,
-                email  : user.email,
-                token : jwt.encode(user.id, secret)
-            };
-            response(res, 200, userinfo, 'success');
-        }else{
-            console.log(chalk.red('no user found at login'));
-            errorHandler(res, 401, {}, 'no user found');
-        }
-
-    }).catch(err => {
-        console.log(chalk.red('login err -> '+err));
-        errorHandler(res, 401, err, 'failed');
-    });
+    return response(res, 200, {"Logged in":"successfully"}, 'Logged in Successfully');
 };
 
 /**
  * Sign Up
  * */
 exports.signup = (req, res, next) => {
-    return User.create({
-        firstname: req.body.firstName,
-        lastname: req.body.lastName,
-        privil: 'user',
-        username: req.body.firstName+' '+req.body.lastName,
-        email: req.body.email,
-        password: req.body.password
-    })
-        .then((user) => { // returns created user record
-            let mail = {
-                from: 'barriercontroller@gmail.com',
-                to: req.body.email,
-                subject: 'Account verification',
-                html: '<h1>Please confirm your registration</h1><a href="https://home-spider.herokuapp.com/api/user/verify/000000000">Click here to verify your account</a>'
-            };
-            mailer.sendMail(mail,(err, info) => {
-                if(err){
-                    console.log(chalk.red('Failed to send mail -> '+err));
-                } else{
-                    console.log(chalk.greenBright('Email sent: '+info.response));
-                }
-            });
-            return response(res, 201, user, "created");
-        })
-        .catch(err => {
-            console.log(chalk.red('error in sigup -> ' + err.errors[0].path + ' is already taken'));
-            return response(res, 400, {}, err.errors[0].path + ' is already taken');
-        })
+    return response(res, 200, {"Registered":"successfully"}, 'Registred Successfully');
 };
 
 /**

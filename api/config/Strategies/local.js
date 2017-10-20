@@ -6,6 +6,8 @@ const User          = require('../../models/users/user.model');
 const passport      = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt        = require('bcrypt-nodejs');
+const mailer        = require('../helpers/mailSender.js');
+const generateToken = require('../../helpers/generateToken');
 const jwt           = require('jwt-simple');
 const secret        = require('../../setup/secret');
 
@@ -44,13 +46,30 @@ exports.signup = new LocalStrategy({
                     // if there is no user with that email
                     // create the user
                     let newUser = User.build({
-                        email: email,
+                        firstname: req.body.firstname,
+                        lastname: req.body.lastname,
+                        username: req.body.firstname+' '+req.body.lastname,
+                        email: req.body.email,
                         privil: 'user',
-                        password: password
+                        password: req.body.password,
+                        verifyToken: generateToken()
                     });
                     // save the user
                     User.create(newUser)
-                    .then(user => {
+                    .then(user => { // returns created user record
+                        let mail = {
+                            from: 'barriercontroller@gmail.com',
+                            to: user.email,
+                            subject: 'Account verification',
+                            html: '<h1>Please confirm your registration</h1><a href="https://home-spider.herokuapp.com/api/user/verify/'+user.verifyToken+'">Click here to verify your account</a>'
+                        };
+                        mailer.sendMail(mail,(err, info) => {
+                            if(err){
+                                console.log(chalk.red('Failed to send mail -> '+err));
+                            } else{
+                                console.log(chalk.greenBright('Email sent: '+info.response));
+                            }
+                        });
                         return done(null, user);
                     }).catch(err => {
                         return done({
