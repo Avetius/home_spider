@@ -6,39 +6,57 @@
 /**
  * Module dependencies.
  */
-var passport = require('passport'),
-    GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
-    config = require('../config'),
-    users = require('../../app/controllers/users.server.controller');
+const User              = require('../../models/users/user.model');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const configAuth        = require('../auth');
 
-module.exports = function() {
-    // Use google strategy
-    passport.use(new GoogleStrategy({
-            clientID: config.google.clientID,
-            clientSecret: config.google.clientSecret,
-            callbackURL: config.google.callbackURL,
-            passReqToCallback: true
-        },
-        function(req, accessToken, refreshToken, profile, done) {
-            // Set the provider data and include tokens
-            var providerData = profile._json;
-            providerData.accessToken = accessToken;
-            providerData.refreshToken = refreshToken;
+module.exports = new GoogleStrategy({
 
-            // Create the user OAuth profile
-            var providerUserProfile = {
-                firstName: profile.name.givenName,
-                lastName: profile.name.familyName,
-                displayName: profile.displayName,
-                email: profile.emails[0].value,
-                username: profile.username,
-                provider: 'google',
-                providerIdentifierField: 'id',
-                providerData: providerData
-            };
+        clientID        : configAuth.googleAuth.clientID,
+        clientSecret    : configAuth.googleAuth.clientSecret,
+        callbackURL     : configAuth.googleAuth.callbackURL,
 
-            // Save the user OAuth profile
-            users.saveOAuthUserProfile(req, providerUserProfile, done);
-        }
-    ));
-};
+    },
+    function(token, refreshToken, profile, done) {
+
+        // make the code asynchronous
+        // User.findOne won't fire until we have all our data back from Google
+        process.nextTick(function() {
+
+            // try to find the user based on their google id
+            User.findOne({
+                where: {
+                    'googleId': profile.id
+                }
+            }).then(user => {
+                if (user) {
+                    // if a user is found, log them in
+                    return done(null, user);
+                } else {
+                    // if the user isnt in our database, create a new user
+                    let newUser          = User.build({
+                        googleId    : profile.id,
+                        googleToken : token,
+                        googleName  : profile.displayName,
+                        googleEmail : profile.emails[0].value // pull the first email
+                    });
+                    // save the user
+                    User.create(newUser)
+                        .then(user => {
+                            return done(null, newUser);
+                        })
+                        .catch(err => {
+                            throw err;
+                        });
+                }
+            }).catch(err => {
+                return done({
+                    message: 'Sign up failed',
+                    err: true,
+                    status: 401,
+                    user: null
+                });
+            });
+        });
+    });

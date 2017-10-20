@@ -4,7 +4,7 @@
   "description": "bolyolyo",
   "main": "server.js",
   "scripts": {
-    "start":"server.js",
+    "start": "NODE_ENV=dev node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -14,35 +14,43 @@
   "keywords": [
     "bolyolyo"
   ],
+  "engines": {
+    "node": "8.0.0"
+  },
   "author": "Avetius",
   "dependencies": {
-    "ajv": "latest",
-    "bcrypt": "latest",
-    "body-parser": "latest",
-    "chalk": "latest",
-    "compression": "latest",
-    "cookie-parser": "latest",
-    "crypto-js": "latest",
-    "express": "latest",
-    "ejs":"latest",
-    "helmet": "latest",
-    "jwt-simple": "latest",
-    "method-override": "latest",
-    "morgan": "latest",
-    "mosca": "latest",
-    "mqtt": "latest",
-    "multer": "latest",
-    "passport": "latest",
-    "passport-jwt": "latest",
-    "passport-local": "latest",
-    "passport-facebook": "latest",
-    "pg": "latest",
-    "pg-hstore": "latest",
-    "sequelize": "latest"
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "1.18.1",
+    "bufferutil": "3.0.2",
+    "chalk": "2.1.0",
+    "compression": "1.7.0",
+    "cookie-parser": "^1.4.3",
+    "express": "4.15.4",
+    "express-ajv": "1.0.3",
+    "helmet": "^3.9.0",
+    "jwt-simple": "0.5.1",
+    "method-override": "2.3.9",
+    "morgan": "^1.8.2",
+    "mosca": "2.6.0",
+    "multer": "1.3.0",
+    "node-uuid": "1.4.8",
+    "nodemailer": "4.2.0",
+    "passport": "^0.4.0",
+    "passport-facebook": "^2.1.1",
+    "passport-google-oauth": "^1.0.0",
+    "passport-jwt": "^3.0.0",
+    "passport-local": "^1.0.0",
+    "pg": "^7.3.0",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^4.9.0",
+    "utf-8-validate": "^3.0.3"
   },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Avetius/home_spider/issues"
   },
-  "homepage": "https://github.com/Avetius/home_spider#readme"
+  "homepage": "https://github.com/Avetius/home_spider#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
 }

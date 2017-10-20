@@ -3,21 +3,87 @@
  */
 'use strict';
 
-const sequelize   = require('../../setup/sequelize.js');
-const hash        = require('../../helpers/hashPassword').hash;
-const compare     = require('../../helpers/hashPassword').compare;
-const jwt         = require('jwt-simple');
-const secret      = require('../../setup/secret');
-const UserSchema  = require('./schemas/user.schema.js');
+const jwt           = require('jwt-simple');
+const bcrypt        = require('bcrypt-nodejs');
+const Sequelize     = require('../../setup/sequelize.js');
+const secret        = require('../../setup/secret');
+const UserSchema    = require('./user.schema.js');
+const User          = Sequelize.define( 'User', UserSchema);
 
-const User = sequelize.define('User', UserSchema,{
-        timestamps: true,
-        freezeTableName: true, // force not to change table name to multiple
-        underscored: true,
-        createdAt: true,
-        updatedAt: true
-    }
-);
+User.beforeCreate((user, options) => {
+    user.password = bcrypt.hashSync(user.password);//, bcrypt.genSaltSync(8), null);
+    return user;
+});
+/*
+
+User.sync({force: false})
+    .then(() => {
+        /!*return User;*!/
+        return User.bulkCreate([
+        {
+            firstname: "Avet",
+            lastname: "Sargsyan",
+            emailVerified: true,
+            username: 'Owner',
+            privil: 'owner',
+            email: 'avet.sargsyan@gmail.com',
+            subTopic: 'avet.sargsyan@gmail.com/sub',
+            password: bcrypt.hashSync('pic16f84a')
+        },{
+            firstname: "Poghos",
+            lastname: "Poghosyan",
+            emailVerified: true,
+            username: 'verified_admin',
+            privil: 'admin',
+            email: 'verified_admin@gmail.com',
+            subTopic: 'verified_admin@gmail.com/sub',
+            password: bcrypt.hashSync('pic16f84a')
+        },{
+            firstname: "Petros",
+            lastname: "Petrosyan",
+            emailVerified: false,
+            username: 'unverified_user',
+            privil: 'user',
+            email: 'dozenoffner@gmail.com',
+            subTopic: 'dozenoffner@gmail.com/sub',
+            password: bcrypt.hashSync('pic16f84a')
+        },{
+            firstname: "Martiros",
+            lastname: "Martirosyan",
+            emailVerified: false,
+            username: 'unverified_admin',
+            privil: 'admin',
+            email: 'azathaymard@gmail.com',
+            subTopic: "azathaymard@gmail.com/sub",
+            password: bcrypt.hashSync('pic16f84a')
+        }]).then(console.log('Users are synchronized'));
+    });
+
+*/
+
+/*
+ User.create({
+ firstname: "Avet",
+ lastname: "Sargsyan",
+ emailVerified: true,
+ username: 'Owner',
+ privil: 'owner',
+ email: 'avet.sargsyan@gmail.com',
+ subTopic: 'avet.sargsyan@gmail.com/sub',
+ password: 'pic16f84a'
+ })
+ */
+
+/*
+
+User.generateHash = function(password) {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+};
+
+// checking if password is valid
+User.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.local.password);
+};
 
 User.getUserById = function (id){
     return this.findById(id).then((user) => {
@@ -39,27 +105,16 @@ User.updateUser = function(id, userObj) {
 };
 User.auth = User.getUserById;
 
-User.userlogin = function (uname, pass) {
+User.login = function (uname, pass) {
     return this.findOne({
         where: {
-            $or: [
-                {
-                    username: {
-                        $eq: uname
-                    }
-                },
-                {
-                    email: {
-                        $eq: uname
-                    }
-                }
-            ]
+            email: uname
         }
     }).then((user) => {
         if (!user) {
             console.log('Invalid username or email');
             return ({
-                message: 'Invalid username or email',
+                message: 'Invalid email or password',
                 err: true,
                 status: 401,
                 user: null
@@ -162,12 +217,6 @@ User.signup = function (userObj) {
         });
 };
 
-User.beforeCreate((user, options) => {
-    return hash(user.password).then(hashedPw => {
-        user.password = hashedPw;
-    });
-});
-
 User.beforeUpdate((user, options) => {
     return this.availbaleCredentials(user.username, user.email)
         .then((credentials) => {
@@ -187,34 +236,9 @@ User.beforeUpdate((user, options) => {
 
         })
 });
+*/
 
-User.sync({force: true})
-    .then(() => {
-        /*return User;*/
-        return User.create({
-            username: 'admin',
-            privileges: 'admin',
-            email: 'avet.sargsyan@gmail.com',
-            password: 'adminadmin'
-        }).then((user) => {
-            /*console.log('user created -> ',user);*/
-            User.update(
-                {accessToken: jwt.encode(user.id, secret)},
-                {where: {id: user.id}}
-            )
-                .then((updated) => {
-                    /*console.log('updated -> ',updated);*/
-                    if (updated) {
-                        return User.findById(user.id).then((u) => {
-                            /*console.log('u -> ',u);*/
-                            return u;
-                        })
-                    } else {
-                        return updated;
-                    }
-                })
-        });
-    })
+/*
     .then(() => {
         return User.create({
             username: 'user',
@@ -222,24 +246,25 @@ User.sync({force: true})
             email: 'user@gmail.com',
             password: 'useruser'
         }).then((user) => {
-            /*console.log('user created -> ',user);*/
+            /!*console.log('user created -> ',user);*!/
             User.update(
                 {accessToken: jwt.encode(user.id, secret)},
                 {where: {id: user.id}}
             )
-                .then((updated) => {
-                    /*console.log('updated -> ',updated);*/
-                    if (updated) {
-                        return User.findById(user.id).then((u) => {
-                            /*console.log('u -> ',u);*/
-                            return u;
-                        })
-                    } else {
-                        return updated;
-                    }
-                })
+            .then((updated) => {
+                /!*console.log('updated -> ',updated);*!/
+                if (updated) {
+                    return User.findById(user.id).then((u) => {
+                        /!*console.log('u -> ',u);*!/
+                        return u;
+                    })
+                } else {
+                    return updated;
+                }
+            })
         });
-    });
+    });*/
+
 
 module.exports = User;
 

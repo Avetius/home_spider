@@ -1,0 +1,60 @@
+{
+  "title": "barrier-create",
+  "description": "describes properties required to create a barrier",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 20,
+      "description": "name of barrier"
+    },
+    "password": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 20,
+      "description": "pass for barrier"
+    },
+    "pubTopic": {
+      "type": "string",
+      "description": "publish topic"
+    },
+    "button0name": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 30,
+      "description": "button 0 name"
+    },
+    "button1name": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 30,
+      "description": "button 1 name"
+    },
+    "button2name": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 30,
+      "description": "button 2 name"
+    },
+    "button3name": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 30,
+      "description": "button 3 name"
+    },
+    "longitude": {
+      "type": "string",
+      "description": "barrier controller geolocation"
+    },
+    "latitude": {
+      "type": "string",
+      "description": "barrier controller geolocation"
+    },
+    "altitude": {
+      "type": "string",
+      "description": "barrier controller geolocation"
+    }
+  },
+  "required": ["name", "password", "longitude", "latitude"]
+}
