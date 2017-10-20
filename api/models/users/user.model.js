@@ -188,7 +188,6 @@ User.availbaleCredentials = function (uname, mail) {
             });
         }
     });
-    //todo check at signup wether mail, username ... are available
 };
 
 User.signup = function (userObj) {

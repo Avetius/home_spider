@@ -53,12 +53,11 @@ exports.authorizePublish = function(client, topic, payload, callback) {
     if(username.includes('barrier_')) {
         Barrier.find({
                 where: {name: client.user},
+                attributes:['user.subTopic'],
                 include: [{model: User}]
-            }
-        )
-            .then(function (barrier) {
-                console.log('barrier joined user query -> ', barrier);
-            });
+        }).then(function (barrier) {
+            console.log('barrier joined user query -> ', barrier);
+        });
         callback(null, client.user + '/sub' === topic); // (client.user === topic.split('/')[1]) || (client.user === 'barrier_naftihayat1/pub') condition must return true
     }else{
         User.find({
