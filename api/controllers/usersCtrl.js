@@ -4,10 +4,8 @@
 const bcrypt        = require('bcrypt-nodejs');
 const jwt           = require('jwt-simple');
 const chalk         = require('chalk');
-const secret        = require('../setup/secret.js');
 const User          = require('../models/users/user.model.js');
 const errorHandler  = require('../helpers/errorHandler.js');
-const mailer        = require('../helpers/mailSender.js');
 const response      = require('../helpers/response.js');
 const upload        = require('../setup/fileUploader.js');
 
