@@ -10,6 +10,5 @@ function generateToken() {
 
     return text;
 }
-let asd = generateToken();
-console.log('Token generated -> ',asd);
+
 module.exports = generateToken;

@@ -1,5 +1,6 @@
 /**
  * Created by sirius on 10/11/17.
+ * todo optimize the query in authorizePublish and authorizeSubscribe with attributes or somehow
  */
 const User              = require('../models/users/user.model');
 const Barrier           = require('../models/barriers/barrier.model');
@@ -50,24 +51,38 @@ exports.authenticate = function(client, username, password, callback) {
 // In this case the client authorized as alice can publish to /usersRules/alice taking
 // the username from the topic and verifing it is the same of the authorized user
 exports.authorizePublish = function(client, topic, payload, callback) {
-    if(username.includes('barrier_')) {
+    let authorized = false;
+    if(client.user.includes('barrier_')){
         Barrier.find({
-                where: {name: client.user},
-                attributes:['user.subTopic'],
-                include: [{model: User}]
+            where: {name: client.user},
+            attributes:['subTopic'],
+            include: [{
+                model: User,
+                attributes:['subTopic']
+            }]
         }).then(function (barrier) {
-            console.log('barrier joined user query -> ', barrier);
+            console.log('authorized -> ', !!barrier.Users.filter(elem =>{ return elem.subTopic === topic}).length);
+            callback(null, !!barrier.Users.filter(elem =>{ return elem.subTopic === topic}).length);
+        }).catch(err => {
+            console.log('error in Barrier authorizePublish -> ',err);
+            callback(null, false);
         });
-        callback(null, client.user + '/sub' === topic); // (client.user === topic.split('/')[1]) || (client.user === 'barrier_naftihayat1/pub') condition must return true
+         // (client.user === topic.split('/')[1]) || (client.user === 'barrier_naftihayat1/pub') condition must return true
     }else{
         User.find({
-                where: {email: client.user},
-                include: [{model: Barrier}]
-            }
-        ).then(function (user) {
-            console.log('user joined barrier query -> ', user);
+            where: {email: client.user, emailVerified: true},
+            attributes:['subTopic'],
+            include: [{
+                model: Barrier,
+                attributes:['subTopic']
+            }]
+        }).then(function (user) {
+            console.log('authorized -> ', !!user.Barriers.filter(elem =>{ return elem.subTopic === topic}).length);
+            callback(null, !!user.Barriers.filter(elem =>{ return elem.subTopic === topic}).length);
+        }).catch(err =>{
+            console.log('error in User authorizePublish -> ',err);
+            callback(null, false);
         });
-        callback(null, client.user + '/sub' === topic); // (client.user === topic.split('/')[1]) || (client.user === 'barrier_naftihayat1/pub') condition must return true
     }
 };
 
@@ -76,3 +91,4 @@ exports.authorizePublish = function(client, topic, payload, callback) {
 exports.authorizeSubscribe = function(client, topic, callback) {
     callback(null, client.user + '/sub' === topic); // client.user === topic.split('/')[1] || (client.user === 'avet.sargsyan@gmail.com/sub')
 };
+
