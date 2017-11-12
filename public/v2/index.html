@@ -5,8 +5,8 @@
     <base href="/">
     <link rel="icon" href="favicon.ico" type="image/gif" >
     <title>Barrierless</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
-    <link href="app-content/app.css" rel="stylesheet" />
+    <link rel="stylesheet" href="app-content/bootstrap.min.css" />
+    <link rel="stylesheet" href="app-content/app.css" />
 </head>
 <body>
     <div class="jumbotron">
@@ -27,10 +27,11 @@
     </div>-->
 
     <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="//code.angularjs.org/1.6.0/angular.min.js"></script>
-    <script src="//code.angularjs.org/1.6.0/angular-route.min.js"></script>
-    <script src="//code.angularjs.org/1.6.0/angular-cookies.min.js"></script>
-
+    <script src="./bower_components/paho-mqtt-js/mqttws31.js"></script><!--//code.angularjs.org/1.6.0/angular.min.js-->
+    <script src="./bower_components/angular/angular.min.js"></script><!--//code.angularjs.org/1.6.0/angular.min.js-->
+    <script src="./bower_components/angular-paho/dist/angular-paho.js"></script><!--//code.angularjs.org/1.6.0/angular.min.js-->
+    <script src="./bower_components/angular-route/angular-route.min.js"></script> <!--//code.angularjs.org/1.6.0/angular-route.min.js-->
+    <script src="./bower_components/angular-cookies/angular-cookies.min.js"></script> <!--//code.angularjs.org/1.6.0/angular-cookies.min.js-->
     <script src="app.js"></script>
     <script src="app-services/authentication.service.js"></script>
     <script src="app-services/flash.service.js"></script>

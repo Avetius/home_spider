@@ -1,8 +1,8 @@
 /**
  * Created by sirius on 9/13/17.
  */
-let app = angular.module("gates", []);
-app.controller('gateCtrl', function($scope, $http) {
+let app = angular.module("gates", ['angularPaho']);
+app.controller('gateCtrl', 'MqttClient', function($scope, $http) {
     $scope.gateCtrl = function (data) {
         $http.post('/gate/open/'+data)
             .success(function(data){

@@ -9,13 +9,12 @@ const compression       = require('compression');                   // compress 
 const helmet            = require('helmet');
 const path              = require('path');
 const routes            = require('../routes/index.js');
-const passport          = require('./auth.js').passport;
-const validate          = require('../validation/validator.js');   //for ajv validator -> require('../validation/user.validator.js'); require('../validation/expressValidator');
 const response          = require("../helpers/response.js");
 const app               = express();
+const pubDir            = path.join(__dirname , '../../public/v2');
 
 //================================ Configs =========================================================================================================
-app.use(express.static(path.join(__dirname , '../../public/v2')));// set the static files location /public/img will be /img for users
+app.use(express.static(pubDir));// set the static files location /public/img will be /img for users
 /*app.set('view engine', 'ejs');
 app.set('views', path.join( __dirname, '../../views'));*/
 app.use(morgan('dev'));                                                 // log every request to the console
@@ -23,14 +22,12 @@ app.use(bodyParser.urlencoded({'extended':'true'}));                    // parse
 app.use(bodyParser.json());                                             // parse application/json
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));         // parse application/vnd.api+json as json
 app.use(methodOverride());
-//app.use(helmet.nosniff());
-//app.use(helmet.ienoopen());
-//app.use(compression());
-
 //================================ Helmet =========================================================================================================
 // Use helmet to secure Express headers
 //app.use(helmet.xframe());
-
+//app.use(helmet.nosniff());
+//app.use(helmet.ienoopen());
+//app.use(compression());
 app.use(helmet.xssFilter());
 app.disable('x-powered-by');
 //=============================== Add Headers ======================================================================================================
@@ -41,16 +38,12 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Credentials', true); /*Set to true if you need the website to include cookies in the requests sent to the API (e.g. in case you use sessions)*/
     next(); /*Pass to next layer of middleware*/
 });
-
-//=============================== Add Passport ===============================
-// app.use(passport.initialize());
 //=============================== Add Routes ================================================================
 // todo remove all routes and leave only 2 one for static file server 2nd for dynamic starting with /api
 app.use('/api', routes);
-
 app.get('/*', function(req,res){ // /.+/
-    res.sendFile(path.join(__dirname , '../../public/v2/index.html'));
-    // load the single HTML file (angular will handle the page changes on the front-end)
+    res.sendFile(pubDir+'/index.html');
+    // load the single HTML file (react or angular will handle the page changes on the front-end)
 });
 //==========================Routes for 404, 500===============================================================
 // Assume 404 since no middleware responded
@@ -62,8 +55,5 @@ app.use(function(err, req, res, next) {
     console.error(err.stack);
     response(res, 500, {url: req.originalUrl, error: 'Internal Server Error'},"Internal Server Error");
 });
-//=============================== Add Form Validation ========================
-// ajv middleware ->
-/*app.use(validate());*/
 
 module.exports = app;
