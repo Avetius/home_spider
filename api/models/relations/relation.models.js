@@ -12,7 +12,6 @@ User.belongsToMany(Barrier, { through: 'UsersBarriers' });
 Barrier.belongsToMany(User, { through: 'UsersBarriers' });
 
 /*
-
 UsersBarriers.sync({force: true})
     .then(() => {
     console.log('UsersBarriers are synched...');

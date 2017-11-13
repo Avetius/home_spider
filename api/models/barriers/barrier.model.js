@@ -68,6 +68,7 @@ Barrier.sync({force: true})
         }]).then(console.log('Barriers are synchronized'))
 });
 */
+/*
 
 Barrier.sync({force: true})
 .then(() => {
@@ -85,5 +86,6 @@ Barrier.sync({force: true})
 		altitude: '3'
 	});
 });
+*/
 
 module.exports = Barrier;
