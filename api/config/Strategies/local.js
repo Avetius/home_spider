@@ -107,37 +107,6 @@ exports.login = new LocalStrategy({
         function(req, email, password, done) { // callback with email and password from our form
             // find a user whose email is the same as the forms email
             // we are checking to see if the user trying to login already exists
-            User.findOne({
-                where: {
-                    email: email,
-                    emailVerified: true
-                }
-            }).then(user => {
-                // if no user is found, return the message
-                if (!user)
-                    return done(null, false, res.send({
-                        message: 'Email not found...',
-                        err: true,
-                        status: 401,
-                        user: null
-                    })); // req.flash is the way to set flashdata using connect-flash
-                // if the user is found but the password is wrong
-                if (!user.password === bcrypt.hashSync(password)) //
-                    return done(null, false, res.send({
-                        message: 'Wrong password...',
-                        err: true,
-                        status: 401,
-                        user: null
-                    })); // create the loginMessage and save it to session as flashdata
-                // all is well, return successful user jwt.encode(user.id, secret)
-                return done(null, user);
-            }).catch(err => {
-                return done({
-                    message: 'Login failed',
-                    err: true,
-                    status: 401,
-                    user: null
-                });
-            });
+
 
         });

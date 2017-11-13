@@ -8,12 +8,47 @@ const User          = require('../models/users/user.model.js');
 const errorHandler  = require('../helpers/errorHandler.js');
 const response      = require('../helpers/response.js');
 const upload        = require('../setup/fileUploader.js');
+const secret        = require('../setup/secret');
 
 /**
  * Login
  * */
 exports.login = (req, res, next) => {
-    return response(res, 200, {"Logged in":"successfully"}, 'Logged in Successfully');
+  let email = req.body.email,
+		password = req.body.password;
+	User.findOne({
+		where: {
+			email: email,
+			emailVerified: true
+		},
+		attributes:['id', 'email', 'password']
+	}).then(user => {
+		// if no user is found, return the message
+		if (!user)
+			return res.send({
+				message: 'Email not found...',
+				err: true,
+				status: 401,
+				user: null
+			}); // req.flash is the way to set flashdata using connect-flash // return done(null, false,
+		// if the user is found but the password is wrong
+		if (!user.password === bcrypt.hashSync(password)) //
+			return res.send({
+				message: 'Wrong password...',
+				err: true,
+				status: 401,
+				user: null
+			}); // create the loginMessage and save it to session as flashdata // return done(null, false,
+		// all is well, return successful user jwt.encode(user.id, secret)
+		return res.send(jwt.encode(user.id, secret)); // done(null,
+	}).catch(err => {
+		return res.send({
+			message: 'Login failed',
+			err: true,
+			status: 401,
+			user: null
+		});
+	});
 };
 
 /**
