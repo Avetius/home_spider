@@ -14,11 +14,10 @@ User.beforeCreate((user, options) => {
     user.password = bcrypt.hashSync(user.password);//, bcrypt.genSaltSync(8), null);
     return user;
 });
-/*
 
 User.sync({force: false})
     .then(() => {
-        /!*return User;*!/
+        /*return User;*/
         return User.bulkCreate([
         {
             firstname: "Avet",
@@ -30,36 +29,18 @@ User.sync({force: false})
             subTopic: 'avet.sargsyan@gmail.com/sub',
             password: bcrypt.hashSync('pic16f84a')
         },{
-            firstname: "Poghos",
-            lastname: "Poghosyan",
+            firstname: "Artur",
+            lastname: "Shaxkyan",
             emailVerified: true,
-            username: 'verified_admin',
-            privil: 'admin',
-            email: 'verified_admin@gmail.com',
-            subTopic: 'verified_admin@gmail.com/sub',
-            password: bcrypt.hashSync('pic16f84a')
-        },{
-            firstname: "Petros",
-            lastname: "Petrosyan",
-            emailVerified: false,
-            username: 'unverified_user',
+            username: 'Artur',
             privil: 'user',
-            email: 'dozenoffner@gmail.com',
-            subTopic: 'dozenoffner@gmail.com/sub',
-            password: bcrypt.hashSync('pic16f84a')
-        },{
-            firstname: "Martiros",
-            lastname: "Martirosyan",
-            emailVerified: false,
-            username: 'unverified_admin',
-            privil: 'admin',
-            email: 'azathaymard@gmail.com',
-            subTopic: "azathaymard@gmail.com/sub",
-            password: bcrypt.hashSync('pic16f84a')
-        }]).then(console.log('Users are synchronized'));
+            email: 'arturshaxkyan1@gmail.com',
+            subTopic: 'verified_admin@gmail.com/sub',
+            password: bcrypt.hashSync('asd123')
+        }])
+          .then(console.log('Users are synchronized'));
     });
 
-*/
 
 /*
  User.create({
