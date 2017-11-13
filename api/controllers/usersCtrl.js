@@ -6,6 +6,8 @@ const jwt           = require('jwt-simple');
 const chalk         = require('chalk');
 const User          = require('../models/users/user.model.js');
 const errorHandler  = require('../helpers/errorHandler.js');
+const generateToken = require('../helpers/generateToken');
+const mailer        = require('../helpers/mailSender.js');
 const response      = require('../helpers/response.js');
 const upload        = require('../setup/fileUploader.js');
 const secret        = require('../setup/secret');
@@ -16,7 +18,7 @@ const secret        = require('../setup/secret');
 exports.login = (req, res, next) => {
   let email = req.body.email,
 		password = req.body.password;
-	User.findOne({
+	return User.findOne({
 		where: {
 			email: email,
 			emailVerified: true
@@ -55,7 +57,66 @@ exports.login = (req, res, next) => {
  * Sign Up
  * */
 exports.signup = (req, res, next) => {
-    return response(res, 200, {"Registered":"successfully"}, 'Registred Successfully');
+	return User.findOne({
+		where: {
+			email: email
+		},
+		attributes:['email']
+	}).then(user => {
+		// check to see if theres already a user with that email
+		if (user) {
+			return res.send({ // done(null, false,
+				message: 'That email is already taken.',
+				err: true,
+				status: 401,
+				user: null
+			});
+		} else {
+			// if there is no user with that email
+			// create the user
+			let newUser = User.build({
+				firstname: req.body.firstname,
+				lastname: req.body.lastname,
+				username: req.body.firstname+' '+req.body.lastname,
+				email: req.body.email,
+				privil: 'user',
+				password: req.body.password,
+				verifyToken: generateToken()
+			});
+			// save the user
+			User.create(newUser)
+				.then(user => { // returns created user record
+					let mail = {
+						from: 'barriercontroller@gmail.com',
+						to: user.email,
+						subject: 'Account verification',
+						html: '<h1>Please confirm your registration</h1><a href="https://home-spider.herokuapp.com/api/user/verify/'+user.verifyToken+'">Click here to verify your account</a>'
+					};
+					mailer.sendMail(mail,(err, info) => {
+						if(err){
+							console.log(chalk.red('Failed to send mail -> '+err));
+						} else{
+							console.log(chalk.greenBright('Email sent: '+info.response));
+						}
+					});
+					return res.send({user});
+				}).catch(err => {
+				return res.send({
+					message: 'Sign up failed',
+					err: true,
+					status: 401,
+					user: null
+				});
+			})
+		}
+	}).catch( err => { // if there are any errors, return the error
+		return res.send({
+			message: 'Sign up failed',
+			err: true,
+			status: 401,
+			user: null
+		});
+	});
 };
 
 /**
@@ -171,7 +232,16 @@ exports.upload = (req, res, next) => {
 
 };
 exports.verify = (req, res, next) => {
-    let verifyToken = req.params.verifyToken;
+  let verifyToken = req.params.verifyToken;
+	return User.update({
+      emailVerified: true,
+	},{
+	    where:{
+	      verifyToken: verifyToken
+		  }
+	}).then(() => {
+		return res.send("OK")
+	})
 };
 
 exports.renderUser = (req, res, next) => {

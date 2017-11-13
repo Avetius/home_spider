@@ -11,8 +11,6 @@ const localSignup = require('../config/Strategies/local').signup;
 const localLogin = require('../config/Strategies/local').login;
 
 passport.use('jwt', jwt);
-passport.use('local-signup',localSignup);
-passport.use('local-login',localLogin);
 passport.use('facebook',Facebook);
 passport.use('google',Google);
 

@@ -10,14 +10,8 @@ let router      = require('express').Router(),
     isLoggedIn  = require('../setup/auth.js').isLoggedIn;
 
 router
-    .post('/signup', validate('userSignUp'), /*passport.authenticate('local-signup', {
-        successRedirect: '/login', // redirect to the secure profile section
-        failureRedirect: '/register' // redirect back to the signup page if there is an error
-    }),*/ userCtrl.signup)
-    .post('/login', validate('userLogin'), /*passport.authenticate('local-login', {
-        successRedirect : '/', // redirect to the secure profile section
-        failureRedirect : '/login' // redirect back to the signup page if there is an error
-    }),*/ userCtrl.login)
+    .post('/signup', validate('userSignUp'), userCtrl.signup)
+    .post('/login', validate('userLogin'), userCtrl.login)
     .post('/verify/:verifyToken', userCtrl.verify)
     .post('/upload', /*upload.single('image'),*/ userCtrl.upload)
     //================================= User routes  =================================================================================
