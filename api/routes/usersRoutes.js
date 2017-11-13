@@ -19,7 +19,7 @@ router
     .put('/me',     passport.authenticate('jwt',{ session: false}), isUser,    validate('userEdit'),   userCtrl.userEdit)
     //================================= Admin routes =================================================================================
     .post('/new',   passport.authenticate('jwt',{ session: false}), isAdmin,   validate('userCreate'), userCtrl.userCreate)
-    .get('/all',    passport.authenticate('jwt',{ session: false}), isAdmin,                           userCtrl.userGetAll)
+    .post('/all',    passport.authenticate('jwt',{ session: false}), isAdmin,                           userCtrl.userGetAll)
     .get('/id/:id',    passport.authenticate('jwt',{ session: false}), isAdmin,                           userCtrl.userGet)
     .put('/id/:id',    passport.authenticate('jwt',{ session: false}), isAdmin,   validate('userEdit'),   userCtrl.userEdit)
     .delete('/id/:id', passport.authenticate('jwt',{ session: false}), isAdmin,                           userCtrl.userDelete)
