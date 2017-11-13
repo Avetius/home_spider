@@ -16,11 +16,9 @@ const secret        = require('../setup/secret');
  * Login
  * */
 exports.login = (req, res, next) => {
-  let email = req.body.email,
-		password = req.body.password;
 	return User.findOne({
 		where: {
-			email: email,
+			email: req.body.email,
 			emailVerified: true
 		},
 		attributes:['id', 'email', 'password']
@@ -34,7 +32,7 @@ exports.login = (req, res, next) => {
 				user: null
 			}); // req.flash is the way to set flashdata using connect-flash // return done(null, false,
 		// if the user is found but the password is wrong
-		if (!user.password === bcrypt.hashSync(password)) //
+		if (!user.password === bcrypt.hashSync(req.body.password)) //
 			return res.send({
 				message: 'Wrong password...',
 				err: true,
@@ -59,7 +57,7 @@ exports.login = (req, res, next) => {
 exports.signup = (req, res, next) => {
 	return User.findOne({
 		where: {
-			email: email
+			email: req.body.email
 		},
 		attributes:['email']
 	}).then(user => {
