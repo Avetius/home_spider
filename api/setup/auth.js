@@ -28,8 +28,8 @@ passport.isUser = (req, res, next) => {
 passport.isAdmin = (req, res, next) => {
     /*passport.authenticate('jwt', { session: false});*/
     console.log("Checking privileges...");
-    /*console.log("req.user -> "+req.user);*/
-    if((req.user.privileges === 'admin') || (req.user.privileges === 'owner')){
+    console.log("req.user.privil -> "+req.user.privil);
+    if((req.user.privil === 'admin') || (req.user.privil === 'owner')){
         console.log('req.user.privileges -> ', req.user.privileges);
         next();
     }else{
