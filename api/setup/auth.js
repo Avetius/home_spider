@@ -29,13 +29,26 @@ passport.isAdmin = (req, res, next) => {
     /*passport.authenticate('jwt', { session: false});*/
     console.log("Checking privileges...");
     /*console.log("req.user -> "+req.user);*/
-    if(req.user.privileges === 'admin'){
+    if((req.user.privileges === 'admin') || (req.user.privileges === 'owner')){
         console.log('req.user.privileges -> ', req.user.privileges);
         next();
     }else{
         console.log('Permission Denied');
         res.send('Permission Denied')
     }
+};
+
+passport.isOwner = (req, res, next) => {
+    /*passport.authenticate('jwt', { session: false});*/
+	console.log("Checking privileges...");
+    /*console.log("req.user -> "+req.user);*/
+	if(req.user.privileges === 'owner'){
+		console.log('req.user.privileges -> ', req.user.privileges);
+		next();
+	}else{
+		console.log('Permission Denied');
+		res.send('Permission Denied')
+	}
 };
 
 passport.isLoggedIn = (req, res, next) => {
@@ -68,5 +81,6 @@ module.exports = {
     passport: passport,
     isUser: passport.isUser,
     isAdmin: passport.isAdmin,
+	  isOwner: passport.isOwner,
     isLoggedIn: passport.isLoggedIn
 };
