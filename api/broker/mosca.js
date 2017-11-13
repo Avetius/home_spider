@@ -7,7 +7,14 @@ const chalk = require('chalk');
 const authenticate = require('./mqtt_auth').authenticate;
 const authorizePublish = require('./mqtt_auth').authorizePublish;
 const authorizeSubscribe = require('./mqtt_auth').authorizeSubscribe;
-const settings = {port: 1883};
+const settings = {
+  port: 1883,
+  http: {
+    port: 80,
+    bundle: true,
+    static: './'
+  }
+};
 const server = new mosca.Server(settings);
 /*---------------------------------------*/
 
