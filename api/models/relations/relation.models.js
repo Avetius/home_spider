@@ -11,6 +11,7 @@ const UsersBarriers = Sequelize.define('UsersBarriers', UsersBarriersSchema);
 User.belongsToMany(Barrier, { through: 'UsersBarriers' });
 Barrier.belongsToMany(User, { through: 'UsersBarriers' });
 
+/*
 UsersBarriers.sync({force: true})
     .then(() => {
     console.log('UsersBarriers are synched...');
@@ -18,5 +19,6 @@ UsersBarriers.sync({force: true})
 
 				});
     });
+*/
 
 module.exports = UsersBarriers;
