@@ -10,7 +10,7 @@ const authorizeSubscribe = require('./mqtt_auth').authorizeSubscribe;
 const settings = {
   port: 1883,
   http: {
-    port: 80,
+    port: 1884,
     bundle: true,
     static: './'
   }
