@@ -1,0 +1,24 @@
+{
+  "name": "v2",
+  "authors": [
+    "sirius89 <avet.sargsyan@gmail.com>"
+  ],
+  "description": "bower components needed for v2",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-cookies": "^1.6.6",
+    "angular-jquery": "^0.2.1",
+    "angular-paho": "^0.0.2",
+    "angular-ws": "^1.1.0",
+    "angular-route": "^1.6.6"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "v1",
+  "authors": [
+    "sirius89 <avet.sargsyan@gmail.com>"
+  ],
+  "description": "bower components needed for v1",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-ws": "^1.1.0",
+    "angular": "^1.2.32"
+  }
+}

@@ -40,4 +40,12 @@ jspm_packages
 .idea/
 .idea/jsLibraryMappings.xml
 .idea/vcs.xml
+
+public/facebookLogin.html
+public/indes.ejs
+public/index.html
+public/login.html
+public/profile.ejs
+public/v1/bower_components/*
+public/v2/bower_components/*
 keys.json
