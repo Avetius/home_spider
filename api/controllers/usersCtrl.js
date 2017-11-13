@@ -42,6 +42,7 @@ exports.login = (req, res, next) => {
 		// all is well, return successful user jwt.encode(user.id, secret)
 		return res.send(jwt.encode(user.id, secret)); // done(null,
 	}).catch(err => {
+	  console.log('err -> ',err);
 		return res.send({
 			message: 'Login failed',
 			err: true,
