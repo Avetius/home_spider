@@ -14,10 +14,11 @@ User.beforeCreate((user, options) => {
     user.password = bcrypt.hashSync(user.password);//, bcrypt.genSaltSync(8), null);
     return user;
 });
+/*
 
-User.sync({force: true})
+User.sync({force: false})
     .then(() => {
-        /*return User;*/
+        /!*return User;*!/
         return User.bulkCreate([
         {
             firstname: "Avet",
@@ -40,6 +41,7 @@ User.sync({force: true})
         }])
           .then(console.log('Users are synchronized'));
     });
+*/
 
 
 /*
