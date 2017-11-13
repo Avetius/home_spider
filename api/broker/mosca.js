@@ -15,7 +15,7 @@ const settings = {
     static: './'
   }
 };
-const server = new mosca.Server(settings);
+const server = new mosca.Server({});
 /*---------------------------------------*/
 
 // fired when a client connects
@@ -45,3 +45,5 @@ function setup() {
     server.authorizeSubscribe = authorizeSubscribe;
     console.log(chalk.green('Mosca server is up and running'));
 }
+
+module.exports = server;

@@ -12,6 +12,7 @@ if(devMode === "heroku"){
     port                    = process.env.PORT || 8088;
     const http              = require('http');
     const httpServer        = http.createServer(app);
+    broker.attachHttpServer(httpServer);
     httpServer.listen(port); // httpPort, 'localhost'
 }else{
     port                    = process.env.PORT || 8089; // 8089
