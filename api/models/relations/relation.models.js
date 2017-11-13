@@ -14,8 +14,9 @@ Barrier.belongsToMany(User, { through: 'UsersBarriers' });
 UsersBarriers.sync({force: true})
     .then(() => {
     console.log('UsersBarriers are synched...');
-        return UsersBarriers;
-        /*usersBarriers.create({*/
+        return UsersBarriers.create({
+
+				});
     });
 
 module.exports = UsersBarriers;
