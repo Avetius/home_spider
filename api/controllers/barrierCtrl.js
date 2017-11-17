@@ -72,13 +72,16 @@ exports.update = (req, res, next) => {
 exports.setRel = (req,res, next) => {
     Barrier.findById(req.params.id)
         .then(barrier => {
-            if(!barrier) response(res, 404, err, "barrier with that id not found");
+            if(!barrier) response(res, 404, {"err":"barrier was not found"}, "barrier with that id not found");
             return barrier.addUser(req.body.id)
                 .then(response(res, 200, {user_id:req.body.id,barrier_id:req.params.id}, "successfully binded"))
-                .catch(response(res, 404, err, "problems with adding or setting a user"))
+                .catch(response(res, 404, {"err":"barrier.addUser failed"}, "problems with adding or setting a user"))
         })
         /*.then(res.send.bind(res))*/
-        .catch(err => {console.log('err in uptRel -> ',err); return response(res, 404, err, "uptRel query error") })
+        .catch((err) => {
+            console.log('err in uptRel -> ',err);
+            return response(res, 404, err, "uptRel query error")
+        })
 };
 
 exports.delete = (req, res, next) => {

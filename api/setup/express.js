@@ -11,7 +11,7 @@ const path              = require('path');
 const routes            = require('../routes/index.js');
 const response          = require("../helpers/response.js");
 const app               = express();
-const pubDir            = path.join(__dirname , '../../public/v2');
+const pubDir            = path.join(__dirname , '../../public/v3');
 
 //================================ Configs =========================================================================================================
 app.use(express.static(pubDir));// set the static files location /public/img will be /img for users

@@ -25,30 +25,15 @@ exports.login = (req, res, next) => {
 	}).then(user => {
 		// if no user is found, return the message
 		if (!user)
-			return res.send({
-				message: 'Email not found...',
-				err: true,
-				status: 401,
-				user: null
-			}); // req.flash is the way to set flashdata using connect-flash // return done(null, false,
+			return response(res, 401, {err:true}, 'Email not found');
 		// if the user is found but the password is wrong
 		if (!user.password === bcrypt.hashSync(req.body.password)) //
-			return res.send({
-				message: 'Wrong password...',
-				err: true,
-				status: 401,
-				user: null
-			}); // create the loginMessage and save it to session as flashdata // return done(null, false,
+			return response(res, 401, {err:true}, 'Wrong password...');
 		// all is well, return successful user jwt.encode(user.id, secret)
-		return res.send(jwt.encode(user.id, secret)); // done(null,
+		return response(res, 200, {token:jwt.encode(user.id, secret)}, 'success');
 	}).catch(err => {
 	  console.log('err -> ',err);
-		return res.send({
-			message: 'Login failed',
-			err: true,
-			status: 401,
-			user: null
-		});
+		return response(res, 401, {err:true}, 'Login failed');
 	});
 };
 
@@ -64,12 +49,7 @@ exports.signup = (req, res, next) => {
 	}).then(user => {
 		// check to see if theres already a user with that email
 		if (user) {
-			return res.send({ // done(null, false,
-				message: 'That email is already taken.',
-				err: true,
-				status: 401,
-				user: null
-			});
+			return response(res, 401, {err:true}, 'That email is already taken.');
 		} else {
 			// if there is no user with that email
 			// create the user
@@ -98,23 +78,14 @@ exports.signup = (req, res, next) => {
 							console.log(chalk.greenBright('Email sent: '+info.response));
 						}
 					});
-					return res.send({user});
-				}).catch(err => {
-				return res.send({
-					message: 'Sign up failed',
-					err: true,
-					status: 401,
-					user: null
-				});
+					return response(res, 201, {user}, 'success');
+				})
+				.catch(err => {
+				return response(res, 401, {err:true}, 'Sign up failed');
 			})
 		}
 	}).catch( err => { // if there are any errors, return the error
-		return res.send({
-			message: 'Sign up failed',
-			err: true,
-			status: 401,
-			user: null
-		});
+		return response(res, 401, {err:true}, 'Sign up failed');
 	});
 };
 
