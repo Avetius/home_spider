@@ -18,8 +18,7 @@ const secret        = require('../setup/secret');
 exports.login = (req, res, next) => {
 	return User.findOne({
 		where: {
-			email: req.body.email,
-			emailVerified: true
+			email: req.body.email
 		},
 		attributes:['id', 'email', 'password']
 	}).then(user => {

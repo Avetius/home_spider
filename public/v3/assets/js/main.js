@@ -1,4 +1,5 @@
 (function( $, undefined ) {
+
   $('#meter').on('pagecreate', function() {
 		if (!(!!localStorage.getItem('accessToken')) ) {
 			$.mobile.changePage('#login', { transition: 'slideup',
@@ -10,7 +11,9 @@
 			$.mobile.changePage('#login', { transition: 'slideup',
 				allowSamePageTransition: true
 			});
-		})
+		});
+		const cloudHost = 'https://hashvich.herokuapp.com/';
+		const cloudWebSocketPort = '80';
   });
 
   $('#meter').bind('pagehide', function(e) {
@@ -36,6 +39,8 @@
 				contentType: "application/json",
 				success: (data) => {
 					localStorage.setItem('accessToken', data.token);
+					localStorage.setItem('email', $('#login-email').val());
+					localStorage.setItem('password', $('#login-password').val());
 					$('login-rolling').css("display","none");
 					$('login-success').css("display","block");
 					setTimeout(function(){
