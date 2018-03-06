@@ -15,7 +15,7 @@ let path    = require('path'),
             cb(null, file.fieldname + '-' + datetimestamp + '.' + extension)
         }
     }),
-    upload  = multer({
+    upload = multer({
         storage: storage,
         fileFilter: function (req, file, callback) {
             let ext = path.extname(file.originalname);

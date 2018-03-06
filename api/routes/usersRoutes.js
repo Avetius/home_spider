@@ -1,13 +1,13 @@
 /**
  * Created by sirius on 5/12/17.
  */
-let router      = require('express').Router(),
-    userCtrl    = require('../controllers/usersCtrl.js'),
-    isAdmin     = require('../setup/auth.js').isAdmin,
-    isUser      = require('../setup/auth.js').isUser,
-    passport    = require('../setup/auth.js').passport,
-    validate    = require('../validation/validator.js'),
-    isLoggedIn  = require('../setup/auth.js').isLoggedIn;
+const router      = require('express').Router();
+const userCtrl    = require('../controllers/usersCtrl.js');
+const isAdmin     = require('../setup/auth.js').isAdmin;
+const isUser      = require('../setup/auth.js').isUser;
+const passport    = require('../setup/auth.js').passport;
+const validate    = require('../validation/validator.js');
+const isLoggedIn  = require('../setup/auth.js').isLoggedIn;
 
 router
     .post('/signup', validate('userSignUp'), userCtrl.signup)
