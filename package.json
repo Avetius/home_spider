@@ -52,6 +52,6 @@
   },
   "homepage": "https://github.com/Avetius/home_spider#readme",
   "devDependencies": {
-    "gulp": "^3.9.1"
+    "gulp": "^4.0.2"
   }
 }
